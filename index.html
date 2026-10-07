@@ -1,0 +1,2171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Comeback">
+<meta name="theme-color" content="#1E4D42">
+<title>The Comeback Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Spline+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --g: #1E4D42; --g2: #2F5D50; --g-soft: #E5EFEC; --g-lite: #C2D9D2;
+  --a: #C97B2E; --a-soft: #FAF0E3; --a-dark: #7A4A18;
+  --ink: #1A1F1E; --muted: #6B7870; --faint: #EBE7DE;
+  --card: #FFFFFF; --bg: #F4F1EA;
+  --red: #B84B30; --red-s: #FAE8E4;
+  --ok: #2F7A52; --ok-s: #E5F2EA;
+  --warn: #B87020; --warn-s: #FAF0E0;
+  --blue: #2F6090; --blue-s: #E5EDF5;
+  --purple: #6A4C93; --purple-s: #EEE8F5;
+  --r: 14px; --shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.05);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { height: 100%; }
+body {
+  font-family: 'Spline Sans', system-ui, sans-serif;
+  background: var(--bg); color: var(--ink);
+  height: 100%; display: flex; flex-direction: column;
+  -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+.hdr { background: var(--g); padding: 52px 18px 0; flex-shrink: 0; border-radius: 0 0 20px 20px; }
+.hdr-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+.hdr-eyebrow { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.55); font-weight: 600; }
+.hdr-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: 24px; font-weight: 800; color: #fff; line-height: 1.1; }
+.hdr-badge { background: rgba(255,255,255,.15); border-radius: 12px; padding: 8px 12px; text-align: center; min-width: 60px; }
+.hdr-badge .n { font-family: 'Bricolage Grotesque', sans-serif; font-size: 28px; font-weight: 800; color: #fff; line-height: 1; }
+.hdr-badge .s { font-size: 10px; color: rgba(255,255,255,.6); margin-top: 2px; }
+.tabs { display: flex; padding: 0 6px 10px; gap: 3px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { flex: 0 0 auto; min-width: 58px; background: transparent; border: none; cursor: pointer; padding: 7px 8px 6px; border-radius: 10px; transition: .15s; font-family: 'Spline Sans', system-ui, sans-serif; }
+.tab-icon { font-size: 18px; display: block; line-height: 1; }
+.tab-label { font-size: 10px; font-weight: 600; color: rgba(255,255,255,.55); margin-top: 3px; display: block; }
+.tab.on .tab-label { color: #fff; }
+.tab.on { background: rgba(255,255,255,.18); }
+.scroll { flex: 1; overflow-y: auto; padding: 14px 14px 28px; -webkit-overflow-scrolling: touch; }
+.panel { display: none; animation: fadeIn .2s ease; }
+.panel.on { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.card { background: var(--card); border: 1px solid rgba(0,0,0,.07); border-radius: var(--r); padding: 16px; margin-bottom: 12px; box-shadow: var(--shadow); }
+.card-ey { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--a); font-weight: 600; margin-bottom: 4px; }
+.card-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+.card-sub { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+.g-lbl { font-size: 11px; font-weight: 600; color: var(--g2); text-transform: uppercase; letter-spacing: .08em; margin: 14px 0 6px; }
+.g-lbl:first-child { margin-top: 2px; }
+.light { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 10px; margin-bottom: 7px; font-size: 13px; line-height: 1.5; }
+.light:last-child { margin-bottom: 0; }
+.light .pip { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.light.g { background: var(--ok-s); } .light.g .pip { background: var(--ok); }
+.light.y { background: var(--warn-s); } .light.y .pip { background: var(--warn); }
+.light.r { background: var(--red-s); } .light.r .pip { background: var(--red); }
+.num-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--faint); }
+.num-row:last-child { border-bottom: none; padding-bottom: 0; }
+.num-lhs { flex: 1; }
+.num-label { font-size: 14px; font-weight: 600; }
+.bar-row { display: flex; gap: 2px; margin-top: 5px; }
+.bar-seg { height: 4px; border-radius: 2px; flex: 1; background: var(--faint); transition: background .2s; }
+.num-ctrl { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: 12px; }
+.nbtn { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid rgba(0,0,0,.12); background: var(--card); color: var(--ink); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; font-family: 'Spline Sans', system-ui, sans-serif; transition: .12s; }
+.nbtn:active { transform: scale(.92); }
+.nbtn.pos { background: var(--g); border-color: var(--g); color: #fff; }
+.nval { font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 700; width: 28px; text-align: center; }
+input[type="number"], input[type="text"], input[type="time"], textarea {
+  border: 1.5px solid rgba(0,0,0,.12); border-radius: 10px; padding: 9px 12px; font-size: 15px; font-weight: 600;
+  font-family: 'Spline Sans', system-ui, sans-serif; color: var(--ink); background: var(--card); width: 100%; outline: none; transition: .15s; }
+input:focus, textarea:focus { border-color: var(--g2); }
+textarea { resize: none; line-height: 1.5; font-size: 14px; font-weight: 400; }
+.field-lbl { font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 5px; }
+.log-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.log-grid.full { grid-template-columns: 1fr; }
+.tag-wrap { display: flex; flex-wrap: wrap; gap: 7px; }
+.tag { border: 1.5px solid rgba(0,0,0,.12); border-radius: 10px; padding: 6px 11px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--muted); background: var(--card); transition: .15s; font-family: 'Spline Sans', system-ui, sans-serif; }
+.tag.on { background: var(--g); border-color: var(--g); color: #fff; }
+.tag:active { transform: scale(.95); }
+.check-row { display: flex; gap: 11px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--faint); cursor: pointer; }
+.check-row:last-child { border-bottom: none; padding-bottom: 0; }
+.check-row:active { opacity: .7; }
+.chk { width: 22px; height: 22px; border-radius: 6px; border: 2px solid rgba(0,0,0,.18); background: var(--card); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; transition: .15s; }
+.chk.on { background: var(--g); border-color: var(--g); }
+.chk svg { width: 12px; height: 12px; stroke: #fff; stroke-width: 3.5; fill: none; display: none; }
+.chk.on svg { display: block; }
+.ck-text { font-size: 14px; font-weight: 600; transition: color .15s; }
+.ck-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.ck-done { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+.supp-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 0; border-bottom: 1px solid var(--faint); }
+.supp-row:last-child { border-bottom: none; padding-bottom: 0; }
+.supp-row-name { font-size: 13px; font-weight: 600; }
+.supp-row-when { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.ampm { display: flex; gap: 6px; flex-shrink: 0; }
+.ampm-btn { width: 42px; height: 32px; border-radius: 8px; border: 1.5px solid rgba(0,0,0,.12); background: var(--card); color: var(--muted); font-size: 12px; font-weight: 700; cursor: pointer; font-family: 'Spline Sans', system-ui, sans-serif; transition: .15s; }
+.ampm-btn.on { background: var(--g); border-color: var(--g); color: #fff; }
+.ampm-btn:active { transform: scale(.92); }
+.big-target { background: var(--g); color: #fff; border-radius: var(--r); padding: 20px; text-align: center; margin-bottom: 10px; }
+.big-target .n { font-family: 'Bricolage Grotesque', sans-serif; font-size: 56px; font-weight: 800; line-height: 1; }
+.big-target .u { font-size: 14px; opacity: .8; margin-top: 4px; }
+.big-target .s { font-size: 12px; opacity: .6; margin-top: 6px; }
+.stats-2 { display: flex; gap: 8px; margin-bottom: 10px; }
+.stat-box { flex: 1; background: var(--a-soft); border-radius: 12px; padding: 14px; text-align: center; }
+.stat-box .v { font-family: 'Bricolage Grotesque', sans-serif; font-size: 24px; font-weight: 700; }
+.stat-box .l { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.meal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 14px 0 10px; }
+.meal-btn { border: 1.5px solid rgba(0,0,0,.12); border-radius: 12px; padding: 14px 8px; text-align: center; cursor: pointer; background: var(--card); transition: .15s; font-family: 'Spline Sans', system-ui, sans-serif; }
+.meal-btn.on { background: var(--g-soft); border-color: var(--g2); }
+.meal-btn .mv { font-family: 'Bricolage Grotesque', sans-serif; font-size: 20px; font-weight: 700; color: var(--g2); }
+.meal-btn .ml { font-size: 11px; color: var(--muted); margin-top: 3px; }
+.meal-btn .mc { font-size: 11px; color: var(--g2); margin-top: 2px; font-weight: 600; }
+.prog-track { height: 8px; background: var(--faint); border-radius: 4px; overflow: hidden; }
+.prog-fill { height: 100%; background: var(--a); border-radius: 4px; transition: width .4s; }
+.prog-label { font-size: 13px; color: var(--muted); text-align: center; margin-top: 7px; }
+.macro-dash { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.macro-box { background: var(--bg); border-radius: 12px; padding: 12px 8px; text-align: center; }
+.macro-box .mlabel { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
+.macro-box .mnum { font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px; font-weight: 700; line-height: 1; }
+.macro-box .mgoal { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.macro-box .mtrack { height: 5px; background: var(--faint); border-radius: 3px; overflow: hidden; margin-top: 7px; }
+.macro-box .mfill { height: 100%; border-radius: 3px; transition: width .4s; }
+.cal-strip { display: flex; align-items: center; justify-content: space-between; background: var(--g); color: #fff; border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; }
+.cal-strip .cl { font-size: 12px; opacity: .8; }
+.cal-strip .cn { font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 700; }
+.qa-wrap { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+.qa-chip { border: 1.5px solid var(--g-lite); background: var(--g-soft); border-radius: 10px; padding: 7px 11px; cursor: pointer; font-family: 'Spline Sans', system-ui, sans-serif; transition: .12s; text-align: left; }
+.qa-chip:active { transform: scale(.94); }
+.qa-chip .qn { font-size: 13px; font-weight: 600; color: var(--g); }
+.qa-chip .qm { font-size: 10px; color: var(--g2); margin-top: 1px; }
+.qa-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.qa-head .field-lbl { margin-bottom: 0; }
+.qa-edit-btn { background: none; border: none; color: var(--g); font-size: 12px; font-weight: 700; cursor: pointer; font-family: 'Spline Sans', system-ui, sans-serif; padding: 2px 4px; }
+.qa-edit-btn:active { opacity: .6; }
+.qa-erow { background: var(--bg); border-radius: 10px; padding: 10px; margin-bottom: 8px; }
+.qa-erow .qa-ename { margin-bottom: 7px; }
+.qa-erow .qa-emacros { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 6px; align-items: end; }
+.qa-erow input { padding: 7px 9px; font-size: 14px; }
+.qa-erow .qa-del { color: var(--red); font-size: 12px; font-weight: 700; cursor: pointer; padding: 8px 6px; white-space: nowrap; align-self: center; }
+.qa-mini-lbl { font-size: 10px; color: var(--muted); font-weight: 600; margin-bottom: 3px; }
+.qa-controls { display: flex; gap: 8px; margin-bottom: 12px; }
+.qa-add-btn { flex: 1; background: var(--g-soft); border: 1.5px dashed var(--g-lite); color: var(--g); border-radius: 10px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Spline Sans', system-ui, sans-serif; }
+.qa-add-btn:active { transform: scale(.97); }
+.qa-reset-btn { background: none; border: 1.5px solid var(--faint); color: var(--muted); border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Spline Sans', system-ui, sans-serif; }
+.food-add { display: grid; grid-template-columns: 1fr; gap: 8px; background: var(--bg); border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+.food-add .macro-inputs { display: grid; grid-template-columns: repeat(3, 1fr) auto; gap: 6px; align-items: end; }
+.food-add input { padding: 8px 10px; font-size: 14px; }
+.food-item { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--faint); }
+.food-item:last-child { border-bottom: none; }
+.food-item .fi-name { font-size: 13px; font-weight: 600; }
+.food-item .fi-macros { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.food-item .fi-del { color: var(--red); font-size: 11px; font-weight: 600; cursor: pointer; padding: 4px 8px; flex-shrink: 0; }
+.food-empty { font-size: 13px; color: var(--muted); font-style: italic; text-align: center; padding: 14px 0; }
+.tier-badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 5px 11px; border-radius: 8px; margin-bottom: 12px; }
+.tier-g { background: var(--g); color: #fff; }
+.tier-a { background: var(--a-soft); color: var(--a-dark); }
+.tier-n { background: var(--faint); color: var(--muted); }
+.supp { border: 1px solid rgba(0,0,0,.08); border-radius: 12px; padding: 14px; margin-bottom: 9px; }
+.supp-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 7px; }
+.supp-name { font-weight: 700; font-size: 14px; }
+.supp-dose { background: var(--g-soft); color: var(--g); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 7px; white-space: nowrap; flex-shrink: 0; }
+.supp-desc { font-size: 13px; color: var(--ink); margin-bottom: 6px; line-height: 1.5; }
+.when-row { display: flex; align-items: flex-start; gap: 6px; }
+.when-pill { background: var(--a-soft); color: var(--a); font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 6px; flex-shrink: 0; margin-top: 2px; }
+.when-txt { font-size: 12px; color: var(--muted); line-height: 1.4; }
+.peptide { border-radius: 12px; padding: 14px; margin-bottom: 9px; }
+.pep-tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 7px; color: #fff; margin-bottom: 6px; }
+.pep-role { font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 5px; }
+.pep-desc { font-size: 13px; line-height: 1.5; margin-bottom: 5px; }
+.pep-knee { font-size: 12px; font-weight: 600; line-height: 1.5; }
+.sched-row { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--faint); }
+.sched-row:last-child { border-bottom: none; padding-bottom: 0; }
+.sched-pill { background: var(--g); color: #fff; font-size: 11px; font-weight: 600; padding: 4px 8px; border-radius: 7px; flex-shrink: 0; white-space: nowrap; margin-top: 1px; }
+.sched-txt { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.trk-grid { display: grid; grid-template-columns: 38px repeat(4, 1fr); gap: 5px; }
+.trk-hd { font-size: 11px; color: var(--muted); text-align: center; padding: 2px 0; }
+.trk-wk { font-size: 12px; font-weight: 600; display: flex; align-items: center; color: var(--ink); }
+.trk-dot { border: 1.5px solid rgba(0,0,0,.12); border-radius: 9px; aspect-ratio: 1/1; background: var(--card); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: .15s; }
+.trk-dot.on { background: var(--g); border-color: var(--g); }
+.trk-dot svg { width: 12px; height: 12px; stroke: #fff; stroke-width: 3.5; fill: none; display: none; }
+.trk-dot.on svg { display: block; }
+.phase-hdr { display: flex; align-items: center; gap: 12px; padding: 10px 0; cursor: pointer; }
+.phase-hdr:active { opacity: .7; }
+.phase-num { width: 42px; height: 42px; border-radius: 11px; background: var(--g-soft); color: var(--g); font-family: 'Bricolage Grotesque', sans-serif; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.phase-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: 16px; font-weight: 700; }
+.phase-weeks { font-size: 12px; color: var(--muted); margin-top: 1px; }
+.phase-chev { margin-left: auto; color: var(--muted); font-size: 14px; transition: transform .2s; }
+.phase-chev.open { transform: rotate(90deg); }
+.phase-body { display: none; padding: 10px 0 4px; }
+.phase-body.open { display: block; }
+.phase-goal { background: var(--a-soft); border-radius: 10px; padding: 11px 13px; font-size: 13px; color: var(--a-dark); margin-bottom: 12px; line-height: 1.5; }
+.day-lbl { font-size: 11px; font-weight: 600; color: var(--g2); text-transform: uppercase; letter-spacing: .08em; margin: 14px 0 8px; }
+.ex { border-bottom: 1px solid var(--faint); padding: 11px 0; }
+.ex:last-child { border-bottom: none; }
+.ex-head { display: flex; align-items: flex-start; gap: 8px; cursor: pointer; }
+.ex-head:active { opacity: .7; }
+.ex-main { flex: 1; min-width: 0; }
+.ex-name { font-size: 14px; font-weight: 600; line-height: 1.3; }
+.ex-meta { display: flex; align-items: center; gap: 6px; margin-top: 5px; flex-wrap: wrap; }
+.eq-pill { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 6px; text-transform: uppercase; letter-spacing: .03em; }
+.eq-machine { background: var(--g-soft); color: var(--g); }
+.eq-free { background: var(--a-soft); color: var(--a-dark); }
+.eq-cable { background: var(--blue-s); color: var(--blue); }
+.eq-band { background: var(--purple-s); color: var(--purple); }
+.eq-body { background: var(--faint); color: var(--muted); }
+.ex-target { font-size: 12px; font-weight: 700; color: var(--g2); white-space: nowrap; flex-shrink: 0; }
+.ex-cue { font-size: 12px; color: var(--muted); line-height: 1.45; margin-top: 6px; }
+.ex-last { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; color: var(--a-dark); background: var(--a-soft); padding: 3px 9px; border-radius: 7px; margin-top: 7px; }
+.ex-last .last-tag { font-size: 9px; letter-spacing: .06em; opacity: .7; }
+.ex-chev { color: var(--muted); font-size: 12px; flex-shrink: 0; margin-top: 2px; transition: transform .2s; }
+.ex-chev.open { transform: rotate(90deg); }
+.ex-log { display: none; margin-top: 10px; background: var(--bg); border-radius: 10px; padding: 12px; }
+.ex-log.open { display: block; }
+.ex-log-grid { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; align-items: end; }
+.ex-log-grid input { padding: 8px 10px; font-size: 14px; }
+.log-btn { background: var(--g); color: #fff; border: none; border-radius: 9px; padding: 9px 14px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Spline Sans', system-ui, sans-serif; white-space: nowrap; height: 38px; }
+.log-btn:active { transform: scale(.95); }
+.ex-history { margin-top: 10px; }
+.ex-hist-item { display: flex; align-items: center; justify-content: space-between; font-size: 12px; padding: 5px 0; border-top: 1px solid var(--faint); }
+.ex-hist-item .v { font-weight: 700; color: var(--ink); }
+.ex-hist-item .d { color: var(--muted); }
+.ex-hist-del { color: var(--red); font-size: 11px; cursor: pointer; padding: 2px 6px; font-weight: 600; }
+.ex-hist-empty { font-size: 12px; color: var(--muted); margin-top: 8px; font-style: italic; }
+.callout { border-left: 3px solid var(--a); padding: 11px 14px; border-radius: 0 11px 11px 0; background: var(--card); font-size: 13px; color: var(--ink); margin-top: 12px; line-height: 1.5; box-shadow: var(--shadow); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.avgs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
+.avg-card { background: var(--a-soft); border-radius: 11px; padding: 12px 6px; text-align: center; }
+.avg-card .v { font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 700; }
+.avg-card .l { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.dose-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.dose-stat { background: var(--g-soft); border-radius: 11px; padding: 12px; text-align: center; }
+.dose-stat .v { font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 700; color: var(--g); }
+.dose-stat .l { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.hist-card { background: var(--card); border: 1px solid rgba(0,0,0,.07); border-radius: var(--r); padding: 14px; margin-bottom: 10px; box-shadow: var(--shadow); cursor: pointer; }
+.hist-row { display: flex; align-items: center; gap: 12px; }
+.hist-date { background: var(--g-soft); border-radius: 10px; padding: 8px 10px; text-align: center; flex-shrink: 0; }
+.hist-date .wd { font-size: 10px; font-weight: 600; color: var(--g); }
+.hist-date .mo { font-size: 13px; font-weight: 700; color: var(--g); }
+.hist-info { flex: 1; min-width: 0; }
+.hist-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 4px; }
+.htag { font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 7px; }
+.htag.g { background: var(--g-soft); color: var(--g); }
+.htag.a { background: var(--a-soft); color: var(--a-dark); }
+.hist-meta { font-size: 12px; color: var(--muted); }
+.hist-knee { flex-shrink: 0; text-align: right; }
+.hist-knee .v { font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 700; }
+.hist-knee .l { font-size: 10px; color: var(--muted); }
+.hist-detail { display: none; padding-top: 12px; margin-top: 10px; border-top: 1px solid var(--faint); }
+.hist-detail.open { display: block; }
+.detail-scores { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
+.dscore { text-align: center; }
+.dscore .v { font-family: 'Bricolage Grotesque', sans-serif; font-size: 20px; font-weight: 700; }
+.dscore .l { font-size: 11px; color: var(--muted); }
+.detail-block { background: var(--faint); border-radius: 10px; padding: 10px; font-size: 13px; color: var(--ink); margin-bottom: 8px; line-height: 1.5; }
+.detail-block b { color: var(--g2); }
+.completed-checks { display: flex; flex-wrap: wrap; gap: 5px; }
+.cc { font-size: 11px; background: var(--g-soft); color: var(--g); padding: 2px 8px; border-radius: 7px; font-weight: 600; }
+.empty-hist { text-align: center; padding: 40px 0; color: var(--muted); font-size: 14px; }
+.export-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: var(--g); color: #fff; border: none; border-radius: 12px; padding: 14px; font-size: 14px; font-weight: 600; font-family: 'Spline Sans', system-ui, sans-serif; cursor: pointer; margin-bottom: 14px; transition: .15s; }
+.export-btn:active { opacity: .8; transform: scale(.98); }
+.install-card { background: var(--g-soft); border: 1px solid var(--g-lite); border-radius: var(--r); padding: 16px; margin-bottom: 14px; }
+.install-title { font-weight: 700; font-size: 14px; color: var(--g); margin-bottom: 8px; }
+.install-step { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 7px; font-size: 13px; line-height: 1.4; }
+.install-step:last-child { margin-bottom: 0; }
+.install-num { width: 22px; height: 22px; border-radius: 50%; background: var(--g); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.footer-disc { font-size: 11px; color: var(--muted); text-align: center; padding: 8px 0 16px; line-height: 1.6; }
+
+/* ---- Peptides: compound picker ---- */
+.cmp-wrap { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 4px; }
+.cmp-chip { border: 1.5px solid rgba(0,0,0,.12); background: var(--card); border-radius: 10px; padding: 7px 12px; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; font-family: 'Spline Sans', system-ui, sans-serif; transition: .12s; }
+.cmp-chip.on { background: var(--g); border-color: var(--g); color: #fff; }
+.cmp-chip:active { transform: scale(.95); }
+
+/* ---- Reconstitution calculator ---- */
+.calc-card { background: var(--card); border: 1px solid rgba(0,0,0,.07); border-radius: var(--r); padding: 16px; margin-bottom: 12px; box-shadow: var(--shadow); }
+.qbtn-row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.qbtn { border: 1.5px solid rgba(0,0,0,.12); background: var(--card); border-radius: 9px; padding: 8px 12px; font-size: 14px; font-weight: 700; color: var(--ink); cursor: pointer; font-family: 'Spline Sans', system-ui, sans-serif; transition: .12s; }
+.qbtn.on { background: var(--g); border-color: var(--g); color: #fff; }
+.qbtn:active { transform: scale(.93); }
+.qbtn-custom { width: 86px; }
+.conc-row { display: flex; gap: 8px; margin: 12px 0; }
+.conc-box { flex: 1; background: var(--g-soft); border-radius: 11px; padding: 12px; text-align: center; }
+.conc-box .cv { font-family: 'Bricolage Grotesque', sans-serif; font-size: 20px; font-weight: 700; color: var(--g); line-height: 1.1; }
+.conc-box .cl { font-size: 11px; color: var(--g2); margin-top: 3px; }
+.mode-toggle { display: flex; gap: 0; border: 1.5px solid var(--g-lite); border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
+.mode-toggle button { flex: 1; background: var(--card); border: none; padding: 10px; font-size: 13px; font-weight: 700; color: var(--muted); cursor: pointer; font-family: 'Spline Sans', system-ui, sans-serif; transition: .12s; }
+.mode-toggle button.on { background: var(--g); color: #fff; }
+.calc-result { background: var(--a-soft); border-radius: 11px; padding: 14px; text-align: center; margin-bottom: 10px; }
+.calc-result .rv { font-family: 'Bricolage Grotesque', sans-serif; font-size: 30px; font-weight: 800; color: var(--a-dark); line-height: 1; }
+.calc-result .rl { font-size: 12px; color: var(--a-dark); opacity: .8; margin-top: 4px; }
+.calc-result .rsub { font-size: 13px; color: var(--a-dark); margin-top: 6px; font-weight: 600; }
+.dose-unit-sel { display: flex; gap: 6px; }
+.dose-unit-sel button { flex: 1; border: 1.5px solid rgba(0,0,0,.12); background: var(--card); border-radius: 8px; padding: 7px; font-size: 12px; font-weight: 700; color: var(--muted); cursor: pointer; font-family: 'Spline Sans', system-ui, sans-serif; }
+.dose-unit-sel button.on { background: var(--g); border-color: var(--g); color: #fff; }
+.syringe-wrap { margin: 14px 0 8px; }
+.syr-caption { font-size: 11px; color: var(--muted); text-align: center; margin-top: 5px; }
+.calc-warn { border-radius: 10px; padding: 11px 13px; font-size: 13px; line-height: 1.45; margin-bottom: 10px; font-weight: 600; }
+.calc-warn.r { background: var(--red-s); color: var(--red); }
+.calc-warn.y { background: var(--warn-s); color: var(--warn); }
+.vial-status { display: flex; gap: 8px; margin: 10px 0; }
+.vial-stat { flex: 1; background: var(--g-soft); border-radius: 11px; padding: 11px; text-align: center; }
+.vial-stat .vv { font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px; font-weight: 700; color: var(--g); }
+.vial-stat .vl { font-size: 10px; color: var(--g2); margin-top: 2px; }
+.calc-actions { display: flex; gap: 8px; margin-top: 4px; }
+.calc-actions button { flex: 1; border-radius: 10px; padding: 12px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Spline Sans', system-ui, sans-serif; border: none; }
+.btn-save { background: var(--g-soft); color: var(--g); border: 1.5px solid var(--g-lite) !important; }
+.btn-log { background: var(--g); color: #fff; }
+.calc-actions button:active { transform: scale(.97); }
+.calc-foot { font-size: 11px; color: var(--muted); text-align: center; margin-top: 10px; font-style: italic; }
+
+/* ---- generic log list (peptides, knee, meditation) ---- */
+.entry { border-bottom: 1px solid var(--faint); padding: 11px 0; }
+.entry:last-child { border-bottom: none; padding-bottom: 0; }
+.entry-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.entry-title { font-size: 14px; font-weight: 700; }
+.entry-sub { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+.entry-date { font-size: 11px; color: var(--muted); white-space: nowrap; flex-shrink: 0; text-align: right; }
+.entry-del { color: var(--red); font-size: 11px; font-weight: 600; cursor: pointer; padding: 2px 4px; }
+.entry-empty { font-size: 13px; color: var(--muted); font-style: italic; text-align: center; padding: 16px 0; }
+
+/* ---- pain slider ---- */
+.pain-slider { width: 100%; margin: 6px 0 2px; -webkit-appearance: none; appearance: none; height: 8px; border-radius: 5px; background: linear-gradient(to right, var(--ok), var(--a), var(--red)); outline: none; }
+.pain-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 26px; height: 26px; border-radius: 50%; background: #fff; border: 3px solid var(--g); cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+.pain-slider::-moz-range-thumb { width: 26px; height: 26px; border-radius: 50%; background: #fff; border: 3px solid var(--g); cursor: pointer; }
+.pain-val { font-family: 'Bricolage Grotesque', sans-serif; font-size: 20px; font-weight: 700; }
+.pain-head { display: flex; justify-content: space-between; align-items: baseline; }
+
+/* ---- trend bars ---- */
+.trend { display: flex; align-items: flex-end; gap: 4px; height: 80px; margin: 10px 0 4px; }
+.trend-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+.trend-bar { width: 100%; border-radius: 3px 3px 0 0; min-height: 3px; transition: height .3s; }
+.trend-lbl { font-size: 9px; color: var(--muted); margin-top: 3px; }
+
+/* ---- rebuild plan ---- */
+.phase-locked { opacity: .55; }
+.lock-pill { font-size: 10px; font-weight: 700; background: var(--faint); color: var(--muted); padding: 3px 8px; border-radius: 7px; margin-left: auto; }
+.sess-toggle { display: flex; gap: 6px; margin-bottom: 12px; }
+.sess-toggle button { flex: 1; border: 1.5px solid var(--g-lite); background: var(--card); border-radius: 10px; padding: 9px; font-size: 13px; font-weight: 700; color: var(--muted); cursor: pointer; font-family: 'Spline Sans', system-ui, sans-serif; }
+.sess-toggle button.on { background: var(--g); border-color: var(--g); color: #fff; }
+.block-lbl { font-size: 11px; font-weight: 700; color: var(--a-dark); background: var(--a-soft); display: inline-block; padding: 3px 10px; border-radius: 7px; margin: 14px 0 6px; text-transform: uppercase; letter-spacing: .05em; }
+.wk-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
+.wk-stat { background: var(--a-soft); border-radius: 11px; padding: 12px 6px; text-align: center; }
+.wk-stat .wv { font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 700; }
+.wk-stat .wl { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+/* ---- meditation ---- */
+.med-timer { background: var(--g); color: #fff; border-radius: var(--r); padding: 22px; text-align: center; margin-bottom: 12px; }
+.med-clock { font-family: 'Bricolage Grotesque', sans-serif; font-size: 52px; font-weight: 800; line-height: 1; letter-spacing: .02em; }
+.med-starts { display: flex; gap: 8px; margin-top: 14px; }
+.med-starts button { flex: 1; background: rgba(255,255,255,.16); border: none; color: #fff; border-radius: 10px; padding: 11px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Spline Sans', system-ui, sans-serif; }
+.med-starts button:active { transform: scale(.95); }
+.med-ctrl { display: flex; gap: 8px; margin-top: 10px; }
+.med-ctrl button { flex: 1; background: rgba(255,255,255,.22); border: none; color: #fff; border-radius: 10px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Spline Sans', system-ui, sans-serif; }
+.streak-row { display: flex; align-items: center; gap: 14px; }
+.streak-num { font-family: 'Bricolage Grotesque', sans-serif; font-size: 40px; font-weight: 800; color: var(--a); line-height: 1; }
+.streak-lbl { font-size: 13px; color: var(--muted); }
+.week-dots { display: flex; gap: 8px; justify-content: space-between; margin-top: 12px; }
+.wd-day { flex: 1; text-align: center; }
+.wd-dot { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--faint); margin: 0 auto 4px; display: flex; align-items: center; justify-content: center; }
+.wd-dot.on { background: var(--g); border-color: var(--g); color: #fff; }
+.wd-dot svg { width: 13px; height: 13px; stroke: #fff; stroke-width: 3.5; fill: none; }
+.wd-name { font-size: 10px; color: var(--muted); }
+.ampm-toggle { display: flex; gap: 6px; }
+.ampm-toggle button { flex: 1; border: 1.5px solid rgba(0,0,0,.12); background: var(--card); border-radius: 9px; padding: 9px; font-size: 13px; font-weight: 700; color: var(--muted); cursor: pointer; font-family: 'Spline Sans', system-ui, sans-serif; }
+.ampm-toggle button.on { background: var(--g); border-color: var(--g); color: #fff; }
+
+/* ---- Today dashboard ---- */
+.dash { background: var(--g); border-radius: var(--r); padding: 16px; margin-bottom: 12px; color: #fff; box-shadow: var(--shadow); }
+.dash-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.dash-streak { text-align: center; }
+.dash-streak .ds-n { font-family: 'Bricolage Grotesque', sans-serif; font-size: 34px; font-weight: 800; line-height: 1; }
+.dash-streak .ds-l { font-size: 10px; opacity: .7; margin-top: 2px; }
+.dash-next { text-align: right; }
+.dash-next .dn-l { font-size: 11px; opacity: .7; }
+.dash-next .dn-v { font-family: 'Bricolage Grotesque', sans-serif; font-size: 20px; font-weight: 700; }
+.dash-knee { text-align: center; }
+.dash-knee .dk-n { font-family: 'Bricolage Grotesque', sans-serif; font-size: 26px; font-weight: 800; line-height: 1; }
+.dash-knee .dk-l { font-size: 10px; opacity: .7; margin-top: 2px; }
+.dash-blocks { display: flex; gap: 6px; }
+.dash-blk { flex: 1; background: rgba(255,255,255,.14); border-radius: 9px; padding: 8px 4px; text-align: center; transition: .15s; }
+.dash-blk.on { background: rgba(255,255,255,.9); }
+.dash-blk .db-ic { font-size: 16px; }
+.dash-blk .db-l { font-size: 9px; margin-top: 2px; opacity: .85; }
+.dash-blk.on .db-l { color: var(--g); opacity: 1; font-weight: 700; }
+.dash-blk.on .db-ic { filter: grayscale(0); }
+.dash-cta { display: block; width: 100%; background: rgba(255,255,255,.16); border: none; color: #fff; border-radius: 10px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Spline Sans', system-ui, sans-serif; margin-top: 12px; }
+
+/* ---- compact peptide link card ---- */
+.pep-link { display: flex; align-items: center; gap: 12px; }
+.pep-link-ic { width: 42px; height: 42px; border-radius: 11px; background: var(--g-soft); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.pep-link-txt { flex: 1; }
+.pep-link-btn { background: var(--g); color: #fff; border: none; border-radius: 10px; padding: 9px 14px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Spline Sans', system-ui, sans-serif; white-space: nowrap; }
+
+/* ---- tape measurements ---- */
+.tape-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.tape-trend-row { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--faint); font-size: 13px; }
+.tape-trend-row:last-child { border-bottom: none; }
+.tape-chg { font-weight: 700; font-size: 12px; }
+
+/* ---- cardio goal bar ---- */
+.goal-bar-wrap { margin-top: 10px; }
+.goal-bar-top { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+.goal-track { height: 10px; background: var(--faint); border-radius: 5px; overflow: hidden; }
+.goal-fill { height: 100%; background: var(--a); border-radius: 5px; transition: width .4s; }
+
+/* ---- knee-limit flag ---- */
+.kflag-btn { font-size: 11px; font-weight: 700; border: 1.5px solid var(--warn); background: var(--card); color: var(--warn); border-radius: 8px; padding: 6px 10px; cursor: pointer; font-family: 'Spline Sans', system-ui, sans-serif; width: 100%; margin-top: 8px; }
+.kflag-btn.on { background: var(--warn); color: #fff; }
+.kflag-note { font-size: 11px; font-weight: 700; color: var(--warn); background: var(--warn-s); padding: 4px 9px; border-radius: 7px; margin-top: 6px; display: inline-block; }
+
+/* ---- backup buttons ---- */
+.backup-row { display: flex; gap: 8px; margin-bottom: 14px; }
+.backup-row button, .backup-row label { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; border-radius: 12px; padding: 13px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Spline Sans', system-ui, sans-serif; border: 1.5px solid var(--g-lite); background: var(--g-soft); color: var(--g); text-align: center; }
+.backup-row button:active, .backup-row label:active { transform: scale(.98); }
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-top">
+    <div>
+      <div class="hdr-eyebrow" id="hdr-date">Loading...</div>
+      <div class="hdr-title">Comeback Plan</div>
+    </div>
+    <div class="hdr-badge">
+      <div class="n" id="check-count">0</div>
+      <div class="s">/ <span id="check-total">0</span> done</div>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab on" onclick="switchTab('today')"><span class="tab-icon">📋</span><span class="tab-label">Today</span></button>
+    <button class="tab" onclick="switchTab('rebuild')"><span class="tab-icon">💪</span><span class="tab-label">Rebuild</span></button>
+    <button class="tab" onclick="switchTab('knee')"><span class="tab-icon">🦵</span><span class="tab-label">Knee</span></button>
+    <button class="tab" onclick="switchTab('peps')"><span class="tab-icon">💉</span><span class="tab-label">Peptides</span></button>
+    <button class="tab" onclick="switchTab('med')"><span class="tab-icon">🧘</span><span class="tab-label">Meditate</span></button>
+    <button class="tab" onclick="switchTab('protein')"><span class="tab-icon">🥩</span><span class="tab-label">Protein</span></button>
+    <button class="tab" onclick="switchTab('workout')"><span class="tab-icon">🏋️</span><span class="tab-label">ACL Plan</span></button>
+    <button class="tab" onclick="switchTab('history')"><span class="tab-icon">📊</span><span class="tab-label">History</span></button>
+  </div>
+</div>
+<div class="scroll" id="scroll">
+<div class="panel on" id="panel-today">
+  <div class="dash" id="today-dash">
+    <div class="dash-top">
+      <div class="dash-streak"><div class="ds-n" id="dash-streak">0</div><div class="ds-l">meditation streak</div></div>
+      <div class="dash-knee"><div class="dk-n" id="dash-knee">--</div><div class="dk-l" id="dash-knee-l">knee pain</div></div>
+      <div class="dash-next"><div class="dn-l">next session</div><div class="dn-v" id="dash-next">A</div></div>
+    </div>
+    <div class="dash-blocks" id="dash-blocks"></div>
+    <button class="dash-cta" onclick="switchTab('rebuild')">Go to today's session</button>
+  </div>
+  <div class="card">
+    <div class="card-title">How are you feeling?</div>
+    <div class="card-sub">Everything auto-saves as you tap</div>
+    <div class="num-row">
+      <div class="num-lhs"><div class="num-label">Energy</div><div class="bar-row" id="bars-energy"></div></div>
+      <div class="num-ctrl"><button class="nbtn" onclick="adj('energy',-1,1,5)">−</button><span class="nval" id="val-energy">3</span><button class="nbtn pos" onclick="adj('energy',1,1,5)">+</button></div>
+    </div>
+    <div class="num-row">
+      <div class="num-lhs"><div class="num-label">Sleep quality</div><div class="bar-row" id="bars-sleep"></div></div>
+      <div class="num-ctrl"><button class="nbtn" onclick="adj('sleep',-1,1,5)">−</button><span class="nval" id="val-sleep">3</span><button class="nbtn pos" onclick="adj('sleep',1,1,5)">+</button></div>
+    </div>
+    <div class="num-row">
+      <div class="num-lhs"><div class="num-label">Knee pain</div><div class="bar-row" id="bars-knee"></div></div>
+      <div class="num-ctrl"><button class="nbtn" onclick="adj('knee',-1,0,10)">−</button><span class="nval" id="val-knee">3</span><button class="nbtn pos" onclick="adj('knee',1,0,10)">+</button></div>
+    </div>
+    <div class="log-grid" style="margin-top:12px;margin-bottom:0">
+      <div><div class="field-lbl">Weight (lbs)</div><input type="number" inputmode="decimal" placeholder="optional" id="inp-weight" oninput="sf('weight',this.value)"></div>
+      <div><div class="field-lbl">Worked out at</div><input type="time" id="inp-workoutTime" oninput="sf('workoutTime',this.value)"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="pep-link">
+      <div class="pep-link-ic">💉</div>
+      <div class="pep-link-txt">
+        <div class="card-title" style="margin-bottom:2px">Peptides and Reta</div>
+        <div style="font-size:12px;color:var(--muted)" id="pep-today-sub">Logged in one place now, with the calculator.</div>
+      </div>
+      <button class="pep-link-btn" onclick="switchTab('peps')">Open</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Supplements taken</div>
+    <div class="card-sub">Tap AM or PM when you take each one</div>
+    <div id="supps-area"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Daily checklist</div>
+    <div id="checklist-area"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Notes</div>
+    <textarea id="inp-notes" rows="3" placeholder="How the session felt, anything to remember..." oninput="sf('notes',this.value)"></textarea>
+  </div>
+</div>
+<div class="panel" id="panel-protein">
+  <div class="card">
+    <div class="card-title">Your numbers</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div><div class="field-lbl">Current (lbs)</div><input type="number" inputmode="numeric" placeholder="e.g. 230" id="inp-curW" oninput="sp('curW',this.value);calcMacros()"></div>
+      <div><div class="field-lbl">Goal (lbs)</div><input type="number" inputmode="numeric" placeholder="e.g. 185" id="inp-goalW" oninput="sp('goalW',this.value);calcMacros()"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Daily targets</div>
+    <div class="card-sub">Protein is set from your goal weight. Adjust carbs and fat to your plan.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+      <div><div class="field-lbl">Protein (g)</div><input type="number" inputmode="numeric" id="inp-proteinT" oninput="sp('proteinT',this.value);calcMacros()"></div>
+      <div><div class="field-lbl">Carbs (g)</div><input type="number" inputmode="numeric" id="inp-carbT" oninput="sp('carbT',this.value);calcMacros()"></div>
+      <div><div class="field-lbl">Fat (g)</div><input type="number" inputmode="numeric" id="inp-fatT" oninput="sp('fatT',this.value);calcMacros()"></div>
+    </div>
+    <div class="stats-2" style="margin-top:10px;margin-bottom:0">
+      <div class="stat-box"><div class="v" id="p-water">--</div><div class="l">oz water / day</div></div>
+      <div class="stat-box"><div class="v" id="p-caltarget">--</div><div class="l">calorie target</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Today's macros</div>
+    <div class="cal-strip"><div><div class="cl">Calories</div></div><div class="cn"><span id="m-cal">0</span> / <span id="m-caltgt">--</span></div></div>
+    <div class="macro-dash">
+      <div class="macro-box"><div class="mlabel" style="color:var(--g)">Protein</div><div class="mnum" id="m-p">0</div><div class="mgoal">/ <span id="m-ptgt">--</span> g</div><div class="mtrack"><div class="mfill" id="m-pfill" style="width:0;background:var(--g)"></div></div></div>
+      <div class="macro-box"><div class="mlabel" style="color:var(--blue)">Carbs</div><div class="mnum" id="m-c">0</div><div class="mgoal">/ <span id="m-ctgt">--</span> g</div><div class="mtrack"><div class="mfill" id="m-cfill" style="width:0;background:var(--blue)"></div></div></div>
+      <div class="macro-box"><div class="mlabel" style="color:var(--a)">Fat</div><div class="mnum" id="m-f">0</div><div class="mgoal">/ <span id="m-ftgt">--</span> g</div><div class="mtrack"><div class="mfill" id="m-ffill" style="width:0;background:var(--a)"></div></div></div>
+    </div>
+    <div class="qa-head"><div class="field-lbl" id="qa-label">Quick add your staples</div><button class="qa-edit-btn" id="qa-toggle" onclick="toggleFoodEdit()">Edit</button></div>
+    <div class="qa-wrap" id="qa-area"></div>
+    <div class="qa-controls" id="qa-controls" style="display:none"><button class="qa-add-btn" onclick="addStaple()">+ Add a staple</button><button class="qa-reset-btn" onclick="resetStaples()">Reset</button></div>
+    <div class="field-lbl">Or add custom</div>
+    <div class="food-add">
+      <input type="text" id="fa-name" placeholder="Food name (optional)">
+      <div class="macro-inputs">
+        <div><div class="field-lbl">P</div><input type="number" inputmode="decimal" id="fa-p" placeholder="g"></div>
+        <div><div class="field-lbl">C</div><input type="number" inputmode="decimal" id="fa-c" placeholder="g"></div>
+        <div><div class="field-lbl">F</div><input type="number" inputmode="decimal" id="fa-f" placeholder="g"></div>
+        <button class="log-btn" onclick="addFoodCustom()">Add</button>
+      </div>
+    </div>
+    <div id="food-list"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Body measurements</div>
+    <div class="card-sub">The scale lies on KLOW (water retention). Tape is the real signal. Measure every week or two, same time of day.</div>
+    <div class="tape-grid">
+      <div><div class="field-lbl">Waist (in)</div><input type="number" inputmode="decimal" id="tape-waist" placeholder="e.g. 38"></div>
+      <div><div class="field-lbl">Hips (in)</div><input type="number" inputmode="decimal" id="tape-hips" placeholder="e.g. 42"></div>
+      <div><div class="field-lbl">Thigh (in)</div><input type="number" inputmode="decimal" id="tape-thigh" placeholder="e.g. 24"></div>
+    </div>
+    <button class="log-btn" style="width:100%;margin-top:10px" onclick="addTape()">Save measurement</button>
+    <div id="photo-reminder" style="font-size:12px;color:var(--muted);margin-top:10px;text-align:center"></div>
+    <div id="tape-trend" style="margin-top:6px"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">When appetite drops on Reta</div>
+    <div class="light g"><div class="pip"></div>Protein first on the plate before anything else fills you up.</div>
+    <div class="light g"><div class="pip"></div>20 to 40 g per sitting, four times a day. Spread beats one big hit.</div>
+    <div class="light y"><div class="pip"></div>Protein shake is your backstop on rough nausea days. Keep whey stocked.</div>
+    <div class="light g"><div class="pip"></div>Always stocked: eggs, Greek yogurt, cottage cheese, chicken, fish, lentils.</div>
+  </div>
+</div>
+<div class="panel" id="panel-peps">
+
+  <div class="card">
+    <div class="card-title">Compound</div>
+    <div class="card-sub">Pick one. The calculator and log below use this choice.</div>
+    <div class="cmp-wrap" id="cmp-area"></div>
+  </div>
+
+  <div class="calc-card">
+    <div class="card-title">Reconstitution calculator</div>
+    <div class="card-sub" id="calc-sub">Set up your vial, then work out units or dose either way.</div>
+
+    <div class="field-lbl">Vial size (mg)</div>
+    <div class="qbtn-row" id="vial-btns" style="margin-bottom:12px"></div>
+
+    <div class="field-lbl">BAC water added (mL)</div>
+    <div class="qbtn-row" id="bac-btns" style="margin-bottom:12px"></div>
+
+    <div class="field-lbl">Syringe size</div>
+    <div class="qbtn-row" id="syr-btns" style="margin-bottom:4px"></div>
+
+    <div class="conc-row">
+      <div class="conc-box"><div class="cv" id="conc-mgml">--</div><div class="cl">mg / mL</div></div>
+      <div class="conc-box"><div class="cv" id="conc-mcgu">--</div><div class="cl">mcg / unit</div></div>
+    </div>
+
+    <div class="mode-toggle">
+      <button id="mode-u2d" class="on" onclick="setCalcMode('u2d')">Units to dose</button>
+      <button id="mode-d2u" onclick="setCalcMode('d2u')">Dose to units</button>
+    </div>
+
+    <div id="calc-input-u2d">
+      <div class="field-lbl">Units drawn</div>
+      <input type="number" inputmode="decimal" id="calc-units" placeholder="e.g. 20" oninput="runCalc()">
+    </div>
+    <div id="calc-input-d2u" style="display:none">
+      <div class="field-lbl">Target dose</div>
+      <input type="number" inputmode="decimal" id="calc-dose" placeholder="e.g. 250" oninput="runCalc()" style="margin-bottom:8px">
+      <div class="dose-unit-sel"><button id="du-mcg" class="on" onclick="setDoseUnit('mcg')">mcg</button><button id="du-mg" onclick="setDoseUnit('mg')">mg</button></div>
+    </div>
+
+    <div id="calc-warn-area"></div>
+
+    <div class="calc-result" style="margin-top:12px">
+      <div class="rv" id="calc-main">--</div>
+      <div class="rl" id="calc-main-l">enter a number above</div>
+      <div class="rsub" id="calc-sub2"></div>
+    </div>
+
+    <div class="syringe-wrap">
+      <div id="syr-graphic"></div>
+      <div class="syr-caption" id="syr-cap">Fill line shows where to pull the plunger</div>
+    </div>
+
+    <div class="vial-status">
+      <div class="vial-stat"><div class="vv" id="vial-days">--</div><div class="vl">days since mixed</div></div>
+      <div class="vial-stat"><div class="vv" id="vial-remain">--</div><div class="vl">mg left in vial</div></div>
+      <div class="vial-stat"><div class="vv" id="vial-doses">--</div><div class="vl">doses left</div></div>
+    </div>
+
+    <div class="calc-actions">
+      <button class="btn-save" onclick="saveVial()">Save vial setup</button>
+      <button class="btn-log" onclick="logCalcDose()">Log this dose</button>
+    </div>
+    <div class="calc-foot">Calculator only. Confirm dosing with your prescriber.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Log a dose</div>
+    <div class="card-sub">Enter your own numbers. Nothing here is prefilled or suggested.</div>
+    <div class="log-grid">
+      <div><div class="field-lbl">Date</div><input type="date" id="pl-date"></div>
+      <div><div class="field-lbl">Time</div><input type="time" id="pl-time"></div>
+    </div>
+    <div class="log-grid">
+      <div><div class="field-lbl">Dose (mg or mcg)</div><input type="text" id="pl-dose" placeholder="e.g. 250 mcg"></div>
+      <div><div class="field-lbl">Units drawn</div><input type="number" inputmode="decimal" id="pl-units" placeholder="e.g. 20"></div>
+    </div>
+    <div class="log-grid full"><div><div class="field-lbl">Injection site</div><input type="text" id="pl-site" placeholder="e.g. left abdomen, near knee"></div></div>
+    <div class="log-grid full"><div><div class="field-lbl">Notes</div><input type="text" id="pl-notes" placeholder="how it felt, anything to track..."></div></div>
+    <button class="log-btn" style="width:100%;margin-top:4px" onclick="addPepLog()">Add to log</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Dose history</div>
+    <div class="card-sub" id="pl-hist-sub">Newest first. Tap remove to delete an entry.</div>
+    <div id="pep-log-list"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-ey">Research compound</div>
+    <div class="card-title">PEPS (KLOW): why it matters for you</div>
+    <div class="card-sub">PEPS is the KLOW blend, 4 peptides targeting everything ACL and meniscus recovery needs. Log your daily dose on the Today tab.</div>
+    <div class="light g"><div class="pip"></div>PEPS and Retatrutide work through completely different pathways. No interference with each other.</div>
+    <div class="light y"><div class="pip"></div><b>Water retention from GHK-Cu makes the scale unreliable.</b> Track tape measurements and photos, not just the number.</div>
+    <div class="light g"><div class="pip"></div>BPC-157 heals gut lining, which may reduce Retatrutide GI side effects. Genuine bonus benefit.</div>
+    <div class="light y"><div class="pip"></div>Both PEPS and Reta are research / investigational only. Clear with a clinician. Use proper sterile injection technique.</div>
+  </div>
+  <div class="card">
+    <div class="card-ey">Read this first</div>
+    <div class="card-title">PEPS essentials</div>
+    <div class="card-sub">The handful of things that actually matter for getting results and staying safe.</div>
+    <div class="g-lbl">Zinc and copper balance</div>
+    <div class="light y"><div class="pip"></div><b>GHK-Cu adds copper, and copper and zinc fight for the same doorway in your gut.</b> Add copper without enough zinc and you can slide into a functional zinc shortfall that hurts healing, immunity, and hormones.</div>
+    <div class="light g"><div class="pip"></div><b>Keep zinc steady, do not mega-dose it.</b> Too little and copper runs away, too much and you cancel out the copper your PEPS is delivering. Balance is the goal. A common target is roughly 1 mg copper to 10-15 mg zinc.</div>
+    <div class="light g"><div class="pip"></div><b>Separate them in time.</b> Zinc in the AM, the PEPS pin later in the day. Do not take your zinc in the same moment as the dose.</div>
+    <div class="light y"><div class="pip"></div><b>Skip big vitamin C megadoses on PEPS days.</b> Over 1,000 mg can block copper absorption. Your Collagen + Vit C is only about 50 mg, so that is fine, just do not stack a separate 1,000 mg tablet near it.</div>
+    <div class="g-lbl">Handling and injection</div>
+    <div class="light g"><div class="pip"></div><b>Copper peptides are delicate.</b> Keep reconstituted PEPS refrigerated and out of light. Gentle swirl to mix, never shake hard.</div>
+    <div class="light g"><div class="pip"></div><b>Sterile every time.</b> New pin, alcohol-wipe the site, rotate sites. Near the knee on lower-body days for local healing.</div>
+    <div class="g-lbl">Dosing and cycle</div>
+    <div class="light g"><div class="pip"></div><b>Ease in.</b> Half dose week 1 to read your tolerance, then to your normal dose. Cycles usually run 8 to 12 weeks.</div>
+    <div class="light y"><div class="pip"></div><b>Watch for copper overload</b> on long high-dose runs: metallic taste, nausea, headaches. Back off and check with your clinician. People with Wilson's disease should not use copper peptides at all.</div>
+    <div class="g-lbl">What to track</div>
+    <div class="light y"><div class="pip"></div><b>Pain number, not swelling.</b> KPV quiets swelling, so a calm-looking knee can still be healing. The pain score is your honest signal.</div>
+    <div class="light g"><div class="pip"></div><b>Tape and photos, not the scale.</b> Copper holds water, so the scale lies on PEPS. Waist, hips, thigh, and progress photos tell the truth.</div>
+  </div>
+  <div class="card">
+    <div class="card-title" style="margin-bottom:12px">The 4 peptides, plain English</div>
+    <div class="peptide" style="background:#E5EFEC"><span class="pep-tag" style="background:var(--g)">BPC-157</span><div class="pep-role">Tissue repair specialist</div><div class="pep-desc">Grows new blood vessels into injury sites, signals healing factors to damaged tissue, and protects the gut lining. Think of it as the crew that builds the road so supplies reach the repair site.</div><div class="pep-knee" style="color:var(--g)">Cartilage and tendon repair data. Drives angiogenesis, the critical early step in ACL graft integration. May reduce Reta GI nausea.</div></div>
+    <div class="peptide" style="background:#E5EFEC"><span class="pep-tag" style="background:var(--g2)">TB-500</span><div class="pep-role">Systemic healing activator</div><div class="pep-desc">Helps cells migrate to injury sites, promotes flexibility and remodeling in connective tissue, supports blood vessel growth body-wide.</div><div class="pep-knee" style="color:var(--g)">Supports connective tissue around the ACL and meniscus. With BPC-157 this pair is called the Wolverine Stack.</div></div>
+    <div class="peptide" style="background:var(--a-soft)"><span class="pep-tag" style="background:var(--a)">GHK-Cu</span><div class="pep-role">Collagen architect</div><div class="pep-desc">A copper peptide that influences thousands of genes involved in tissue repair and collagen production. The largest component in the blend.</div><div class="pep-knee" style="color:var(--a-dark)">Drives collagen in tendons and joint tissue. Overlaps with your collagen supplement, so halve that on PEPS days. Main cause of water retention, use tape not scale.</div></div>
+    <div class="peptide" style="background:var(--red-s)"><span class="pep-tag" style="background:var(--red)">KPV</span><div class="pep-role">Inflammation controller</div><div class="pep-desc">Derived from alpha-MSH. Calms the inflammatory cascade that, unchecked after surgery, delays healing and causes chronic pain.</div><div class="pep-knee" style="color:var(--red)">Reduces low-grade inflammation after ACL surgery. Warning: less swelling does not mean the knee is fine. Track the pain number carefully.</div></div>
+  </div>
+  <div class="card">
+    <div class="card-ey">What changes with PEPS</div>
+    <div class="card-title">Plan adjustments</div>
+    <div style="margin-top:10px">
+      <div class="light g"><div class="pip"></div><b>Reduce collagen supplement on PEPS days.</b> GHK-Cu covers that mechanism. Half dose or skip.</div>
+      <div class="light g"><div class="pip"></div><b>Slightly faster phase progression possible</b> if pain stays consistently 0 to 2. Pain rule still governs.</div>
+      <div class="light y"><div class="pip"></div><b>Reduced swelling does not mean healed.</b> KPV dampens the signal. Track the pain number.</div>
+      <div class="light g"><div class="pip"></div><b>PEPS timing for knee:</b> 30 to 60 min before lower-body sessions for the best joint healing stimulus.</div>
+      <div class="light y"><div class="pip"></div><b>Scale unreliable on PEPS.</b> Use tape (waist, hips, thigh) and progress photos as real markers.</div>
+      <div class="light g"><div class="pip"></div><b>Protocol:</b> typically 5 days on / 2 off, or daily. Half dose week 1 to assess tolerance. Cycles run 8 to 12 weeks.</div>
+    </div>
+  </div>
+  <div class="card">
+    <span class="tier-badge tier-g">Tier 1: Do these</span>
+    <div class="supp"><div class="supp-top"><span class="supp-name">Creatine Monohydrate</span><span class="supp-dose">5 g / day</span></div><div class="supp-desc">Holds muscle during rapid weight loss. Mild focus benefit for ADHD. No loading phase. Just take daily.</div><div class="when-row"><span class="when-pill">When</span><span class="when-txt">Any time. Consistency beats timing.</span></div></div>
+    <div class="supp"><div class="supp-top"><span class="supp-name">Vitamin D3 + K2</span><span class="supp-dose">2,000-5,000 IU + 100 mcg</span></div><div class="supp-desc">Rapid weight loss depletes bone density. D3 absorbs calcium, K2 directs it to bones. Critical for the ACL graft.</div><div class="when-row"><span class="when-pill">When</span><span class="when-txt">AM, with your fattiest meal.</span></div></div>
+    <div class="supp"><div class="supp-top"><span class="supp-name">Magnesium Glycinate</span><span class="supp-dose">300-400 mg</span></div><div class="supp-desc">Helps Reta constipation, improves sleep and recovery, reduces cramps. Glycinate is gentlest on the stomach.</div><div class="when-row"><span class="when-pill">When</span><span class="when-txt">PM, 30-60 min before bed.</span></div></div>
+    <div class="supp"><div class="supp-top"><span class="supp-name">Collagen + Vit C</span><span class="supp-dose">10-15 g + 50 mg (half on PEPS days)</span></div><div class="supp-desc">Stimulates collagen in tendons and ligaments at the time of loading. Reduce on PEPS days, GHK-Cu overlaps.</div><div class="when-row"><span class="when-pill">When</span><span class="when-txt">30-60 min before lower-body sessions.</span></div></div>
+  </div>
+  <div class="card">
+    <span class="tier-badge tier-a">Tier 2: Strong additions</span>
+    <div class="supp"><div class="supp-top"><span class="supp-name">Omega-3 Fish Oil</span><span class="supp-dose">2-3 g EPA + DHA</span></div><div class="supp-desc">Anti-inflammatory for the knee. Helps preserve lean mass in a deficit, stacks with creatine and protein.</div><div class="when-row"><span class="when-pill">When</span><span class="when-txt">With food, split across two meals.</span></div></div>
+    <div class="supp"><div class="supp-top"><span class="supp-name">Electrolytes</span><span class="supp-dose">1 packet, training/GI days</span></div><div class="supp-desc">Reta GI plus calorie deficit depletes sodium, potassium, magnesium fast. Prevents the foggy-head spiral.</div><div class="when-row"><span class="when-pill">When</span><span class="when-txt">Morning or during workout.</span></div></div>
+    <div class="supp"><div class="supp-top"><span class="supp-name">Psyllium Husk Fiber</span><span class="supp-dose">5-10 g</span></div><div class="supp-desc">GLP-1 constipation is real and fiber helps more than expected. Chase with a full glass of water every time.</div><div class="when-row"><span class="when-pill">When</span><span class="when-txt">Before a meal.</span></div></div>
+  </div>
+  <div class="card">
+    <span class="tier-badge tier-n">Tier 3: Optional</span>
+    <div class="supp"><div class="supp-top"><span class="supp-name">Glucosamine + Chondroitin</span><span class="supp-dose">1,500 + 1,200 mg</span></div><div class="supp-desc">Supports knee cartilage. Takes 8-12 weeks to notice. Can affect blood sugar, flag with clinician given Reta's glucagon component.</div><div class="when-row"><span class="when-pill">When</span><span class="when-txt">With meals.</span></div></div>
+    <div class="supp"><div class="supp-top"><span class="supp-name">Zinc</span><span class="supp-dose">15-25 mg</span></div><div class="supp-desc">Two jobs now: calorie restriction depletes zinc, AND the copper in PEPS (GHK-Cu) needs zinc to stay balanced. Keep it steady, do not mega-dose. Aim roughly 10-15 mg zinc per 1 mg copper.</div><div class="when-row"><span class="when-pill">When</span><span class="when-txt">AM is ideal on PEPS days to separate it from the copper dose. Not at the same time as magnesium.</span></div></div>
+  </div>
+</div>
+<div class="panel" id="panel-rebuild">
+  <div class="card">
+    <div class="card-title">Rebuild to play again</div>
+    <div class="card-sub">Four days a week. Same shape every session so it never gets confusing: move, lift, cardio, stretch. You are rebuilding strength, endurance, mobility, and flexibility back toward sport.</div>
+    <div class="light g"><div class="pip"></div><b>Cleared with limits:</b> load the knee, but respect the limits. Controlled range, no pain spikes, no cutting or jumping yet.</div>
+    <div class="light y"><div class="pip"></div><b>Pain rule:</b> 0 to 3 keep going. 4 to 5 or next-day swelling, drop load or range. Sharp, above 5, or giving way, stop and check with PT.</div>
+    <div class="light g"><div class="pip"></div><b>Phases unlock as you log sessions:</b> Phase 2 after 8 sessions, Phase 3 after 20. You can also unlock any phase by hand.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">This week</div>
+    <div class="wk-stats" id="rb-wkstats"></div>
+    <div class="goal-bar-wrap">
+      <div class="goal-bar-top"><span>Weekly cardio goal</span><span><input type="number" inputmode="numeric" id="rb-cardio-goal" placeholder="90" style="width:54px;padding:4px 6px;font-size:13px;text-align:center" oninput="setCardioGoal(this.value)"> min</span></div>
+      <div class="goal-track"><div class="goal-fill" id="rb-goal-fill" style="width:0"></div></div>
+      <div class="goal-bar-top" style="margin-top:5px;margin-bottom:0"><span id="rb-goal-label">Set a target to track it</span></div>
+    </div>
+    <div id="rb-keylifts"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Daily checklist</div>
+    <div id="rb-checklist"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">The program</div>
+    <div class="card-sub">Tap a phase to open it. Each session is the same four blocks. Tap any exercise to log sets, reps, weight, and effort.</div>
+    <div id="rb-phases"></div>
+  </div>
+</div>
+
+<div class="panel" id="panel-knee">
+  <div class="card">
+    <div class="card-title">Knee rehab</div>
+    <div class="card-sub">Pick an exercise, log your sets and reps, and slide your pain before and after. This is the foundation the Rebuild plan sits on.</div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--red)">
+    <div class="card-title" style="font-size:15px">The one rule</div>
+    <div style="font-size:14px;line-height:1.5;color:var(--ink)">If pain goes up <b>2 or more points</b>, or lingers into the next day, back off and check with your PT. Less swelling does not mean healed.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Log a rehab set</div>
+    <div class="log-grid">
+      <div><div class="field-lbl">Date</div><input type="date" id="kn-date"></div>
+      <div><div class="field-lbl">Exercise</div><select id="kn-ex" style="width:100%;border:1.5px solid rgba(0,0,0,.12);border-radius:10px;padding:9px 12px;font-size:15px;font-weight:600;font-family:'Spline Sans',system-ui,sans-serif;color:var(--ink);background:var(--card)"></select></div>
+    </div>
+    <div class="log-grid">
+      <div><div class="field-lbl">Sets</div><input type="number" inputmode="numeric" id="kn-sets" placeholder="e.g. 3"></div>
+      <div><div class="field-lbl">Reps (or seconds)</div><input type="text" id="kn-reps" placeholder="e.g. 12"></div>
+    </div>
+    <div class="pain-head"><div class="field-lbl">Pain before</div><span class="pain-val" id="kn-pb-val" style="color:var(--ok)">0</span></div>
+    <input type="range" class="pain-slider" id="kn-pb" min="0" max="10" value="0" oninput="document.getElementById('kn-pb-val').textContent=this.value;document.getElementById('kn-pb-val').style.color=painColor(this.value)">
+    <div class="pain-head" style="margin-top:10px"><div class="field-lbl">Pain after</div><span class="pain-val" id="kn-pa-val" style="color:var(--ok)">0</span></div>
+    <input type="range" class="pain-slider" id="kn-pa" min="0" max="10" value="0" oninput="document.getElementById('kn-pa-val').textContent=this.value;document.getElementById('kn-pa-val').style.color=painColor(this.value)">
+    <div class="log-grid full" style="margin-top:10px"><div><div class="field-lbl">Notes</div><input type="text" id="kn-notes" placeholder="how it felt, range, swelling..."></div></div>
+    <button class="log-btn" style="width:100%;margin-top:4px" onclick="addKneeLog()">Add to log</button>
+  </div>
+  <div class="card">
+    <div class="card-title">Pain trend</div>
+    <div class="card-sub">Pain after each logged set, most recent on the right.</div>
+    <div class="trend" id="knee-trend"></div>
+    <div id="knee-trend-empty" class="entry-empty" style="display:none">No pain data yet. Log a set above.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Rehab menu</div>
+    <div class="card-sub">Start at easy, move up only when pain stays low. These feed the dropdown above.</div>
+    <div id="knee-menu"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">History</div>
+    <div id="knee-log-list"></div>
+  </div>
+</div>
+
+<div class="panel" id="panel-med">
+  <div class="med-timer">
+    <div class="med-clock" id="med-clock">5:00</div>
+    <div class="med-starts" id="med-starts">
+      <button onclick="startMed(5)">5 min</button>
+      <button onclick="startMed(10)">10 min</button>
+      <button onclick="startMed(15)">15 min</button>
+    </div>
+    <div class="med-ctrl" id="med-ctrl" style="display:none">
+      <button onclick="pauseMed()" id="med-pause">Pause</button>
+      <button onclick="stopMed()">Stop</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="streak-row">
+      <div class="streak-num" id="med-streak">0</div>
+      <div><div style="font-size:15px;font-weight:700">day streak</div><div class="streak-lbl" id="med-streak-sub">Meditate today to start one.</div></div>
+    </div>
+    <div class="week-dots" id="med-week"></div>
+    <div style="margin-top:14px">
+      <div class="field-lbl">My usual time (keeps the streak honest)</div>
+      <div class="ampm-toggle"><button id="mr-am" onclick="setMedReminder('AM')">Morning</button><button id="mr-pm" onclick="setMedReminder('PM')">Evening</button><button id="mr-any" class="on" onclick="setMedReminder('')">No preference</button></div>
+      <div id="med-reminder-note" style="font-size:12px;color:var(--muted);margin-top:8px;text-align:center"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Log a session</div>
+    <div class="card-sub">The timer logs automatically when it finishes. Or log one by hand here.</div>
+    <div class="log-grid">
+      <div><div class="field-lbl">Date</div><input type="date" id="md-date"></div>
+      <div><div class="field-lbl">Minutes</div><input type="number" inputmode="numeric" id="md-dur" placeholder="e.g. 10"></div>
+    </div>
+    <div class="field-lbl">AM or PM</div>
+    <div class="ampm-toggle" style="margin-bottom:10px"><button id="md-am" class="on" onclick="setMedAmpm('AM')">AM</button><button id="md-pm" onclick="setMedAmpm('PM')">PM</button></div>
+    <div class="field-lbl">Did it</div>
+    <div class="ampm-toggle" style="margin-bottom:10px"><button id="md-did-y" class="on" onclick="setMedDid(true)">Yes</button><button id="md-did-n" onclick="setMedDid(false)">No</button></div>
+    <div class="log-grid full"><div><div class="field-lbl">Notes</div><input type="text" id="md-notes" placeholder="how it went..."></div></div>
+    <button class="log-btn" style="width:100%;margin-top:4px" onclick="addMedLog()">Add to log</button>
+  </div>
+  <div class="card">
+    <div class="card-title">History</div>
+    <div id="med-log-list"></div>
+  </div>
+</div>
+
+<div class="panel" id="panel-workout">
+  <div class="card">
+    <div class="card-title">Pain rule</div>
+    <div style="margin-top:10px">
+      <div class="light g"><div class="pip"></div><b>0 to 3 / 10:</b> Mild, gone by next morning. Keep going.</div>
+      <div class="light y"><div class="pip"></div><b>4 to 5 or next-day swelling:</b> Drop load or range. Stay in current phase.</div>
+      <div class="light r"><div class="pip"></div><b>Sharp, above 5, locking, giving way:</b> Stop and get checked.</div>
+    </div>
+    <div class="callout"><b>Tap any exercise</b> to log your weight and sets. Equipment type and the one thing to focus on show right under each move. 4 sessions a week: S1 and S3 lower, S2 and S4 upper. Walk on off days.</div>
+    <div class="legend">
+      <span class="eq-pill eq-machine">Machine</span>
+      <span class="eq-pill eq-free">Free weights</span>
+      <span class="eq-pill eq-cable">Cable</span>
+      <span class="eq-pill eq-band">Bands</span>
+      <span class="eq-pill eq-body">Bodyweight</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">8-week tracker</div>
+    <div style="font-size:12px;color:var(--muted);margin:4px 0 12px" id="trk-count">0 of 32 sessions</div>
+    <div class="trk-grid" id="trk-grid"></div>
+  </div>
+  <div class="card">
+    <div class="card-title" style="margin-bottom:12px">The program</div>
+    <div id="phases-area"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Every session</div>
+    <div style="margin-top:8px">
+      <div class="light g"><div class="pip"></div><b>Warm up:</b> 5 min bike, then cable TKEs to wake the knee before load.</div>
+      <div class="light g"><div class="pip"></div><b>After lower days:</b> ice 10-15 min if any swelling.</div>
+      <div class="light y"><div class="pip"></div><b>Not yet:</b> running, jumping, cutting. Phase 4 builds toward it, PT clears it.</div>
+    </div>
+  </div>
+</div>
+<div class="panel" id="panel-history">
+  <div class="install-card">
+    <div class="install-title">📱 Install as iPhone app</div>
+    <div class="install-step"><div class="install-num">1</div><div>Host this file online (tiiny.host is fastest, or GitHub Pages)</div></div>
+    <div class="install-step"><div class="install-num">2</div><div>Open that link in Safari</div></div>
+    <div class="install-step"><div class="install-num">3</div><div>Tap Share, then "Add to Home Screen", then "Add"</div></div>
+    <div class="install-step"><div class="install-num">4</div><div>Opens full screen. Data saves automatically in your browser.</div></div>
+  </div>
+  <div class="card" style="background:var(--a-soft);border-color:var(--a-soft)">
+    <div class="card-title" style="font-size:15px">Back up your data</div>
+    <div class="card-sub" style="margin-bottom:12px">Everything lives in this browser. If you clear Safari or switch phones, it can vanish. Save a backup file now and then, and restore it anytime.</div>
+    <div class="backup-row">
+      <button onclick="exportBackup()">⬇️ Back up</button>
+      <label>⬆️ Restore<input type="file" accept="application/json,.json" style="display:none" onchange="importBackup(this)"></label>
+    </div>
+    <div style="font-size:11px;color:var(--muted);text-align:center" id="backup-status">Restoring replaces current data with the backup file.</div>
+  </div>
+  <button class="export-btn" onclick="exportCSV()">⬇️ Download everything as CSV (opens in Excel)</button>
+  <div class="card">
+    <div class="card-ey">Last 14 days</div>
+    <div class="card-title" style="margin-bottom:12px">Averages</div>
+    <div class="avgs-grid">
+      <div class="avg-card"><div class="v" id="avg-knee">--</div><div class="l">knee / 10</div></div>
+      <div class="avg-card"><div class="v" id="avg-energy">--</div><div class="l">energy / 5</div></div>
+      <div class="avg-card"><div class="v" id="avg-sleep">--</div><div class="l">sleep / 5</div></div>
+    </div>
+    <div class="dose-stats">
+      <div class="dose-stat"><div class="v" id="avg-reta">0</div><div class="l">reta doses</div></div>
+      <div class="dose-stat"><div class="v" id="avg-peps">0</div><div class="l">peps doses</div></div>
+    </div>
+  </div>
+  <div id="hist-list"></div>
+  <div class="footer-disc">Not medical advice. Retatrutide and the KLOW blend are investigational and not FDA approved. Clear the supplement stack with a clinician. Get a PT on the knee when you can.</div>
+</div>
+</div>
+<script>
+var CHECK_SVG = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+var TODAY = new Date().toISOString().slice(0,10);
+
+var CHECKS = [
+  {id:'p', g:'Muscle', t:'Hit protein target', s:'See Protein tab'},
+  {id:'cr', g:'Muscle', t:'Creatine 5g done', s:''},
+  {id:'wr', g:'Muscle', t:'Training or walk done', s:''},
+  {id:'me', g:'Gut', t:'Smaller, frequent meals', s:'No big greasy ones'},
+  {id:'fi', g:'Gut', t:'Psyllium fiber done', s:'Full glass of water'},
+  {id:'wa', g:'Hydration', t:'Steady water all day', s:'Half bodyweight in oz'},
+  {id:'el', g:'Hydration', t:'Electrolytes if needed', s:'Training or GI days'},
+  {id:'hr', g:'Safety', t:'Checked resting heart rate', s:'Note any big jump'},
+  {id:'sl', g:'Recovery', t:'7 to 9 hrs sleep targeted', s:'Magnesium helps'},
+  {id:'ic', g:'Recovery', t:'Iced knee if swelling', s:'10-15 min after lower days'},
+  {id:'co', g:'Recovery', t:'Collagen + Vit C pre-knee session', s:'30-60 min before'}
+];
+
+var SIDES = ['Nausea','Fatigue','Heart rate up','Tingling','Constipation','Diarrhea','Headache','None'];
+
+var SUPPS = [
+  {id:'creatine', n:'Creatine', w:'Any time'},
+  {id:'d3k2', n:'Vitamin D3 + K2', w:'AM, fatty meal'},
+  {id:'omega', n:'Omega-3 Fish Oil', w:'With food'},
+  {id:'psyllium', n:'Psyllium Fiber', w:'Before a meal'},
+  {id:'electro', n:'Electrolytes', w:'Training / GI days'},
+  {id:'collagen', n:'Collagen + Vit C', w:'Pre-knee session'},
+  {id:'mag', n:'Magnesium Glycinate', w:'PM, before bed'},
+  {id:'zinc', n:'Zinc', w:'PM, with dinner'},
+  {id:'gluco', n:'Glucosamine + Chondroitin', w:'With meals'}
+];
+
+var PHASES = [
+  {n:'P1', t:'Reactivate', w:'Weeks 1 to 2',
+   goal:'Wake up the quad, glute, and hamstring. Nothing should hurt. Upper body trains hard.',
+   lower:[
+    {name:'Leg press, high foot, shallow', target:'3 x 12', eq:'machine', cue:'Push through your heel. Knees track over toes, never let them cave in.'},
+    {name:'Lying leg curl', target:'3 x 12', eq:'machine', cue:'Squeeze the hamstring. Slow on the way back, no swinging.'},
+    {name:'Hip abductor machine', target:'3 x 15', eq:'machine', cue:'Push knees out slowly. This builds the glute that protects the knee.'},
+    {name:'Cable terminal knee extension (TKE)', target:'3 x 15', eq:'cable', cue:'Lock out the last few degrees. The single key ACL rehab move.'},
+    {name:'Seated calf raise', target:'3 x 15', eq:'machine', cue:'Full range, pause at the top. Calf supports the knee.'},
+    {name:'Hip thrust machine or glute bridge', target:'3 x 12', eq:'machine', cue:'Drive through heels, squeeze glutes hard at the top.'},
+    {name:'Easy stationary bike', target:'10 min', eq:'machine', cue:'Range of motion and blood flow only. No resistance.'},
+    {name:'Single-leg balance', target:'3 x 20 sec', eq:'body', cue:'Hold the machine lightly. Builds stability that prevents re-injury.'}],
+   upper:[
+    {name:'Chest press machine', target:'3 x 12', eq:'machine', cue:'Controlled press, full range, no bouncing.'},
+    {name:'Seated cable row', target:'3 x 12', eq:'cable', cue:'Pull to your stomach, squeeze shoulder blades together.'},
+    {name:'Shoulder press machine', target:'3 x 10', eq:'machine', cue:'Press up smooth, do not lock out hard.'},
+    {name:'Lat pulldown', target:'3 x 12', eq:'cable', cue:'Pull to upper chest, lead with your elbows.'},
+    {name:'Cable face pull', target:'3 x 15', eq:'cable', cue:'Pull to your face. Great for shoulder health and posture.'},
+    {name:'Plank', target:'3 x 25 sec', eq:'body', cue:'Straight line head to heels. Brace your core.'},
+    {name:'Dead bug', target:'3 x 8 / side', eq:'body', cue:'Slow and controlled, keep lower back flat on the floor.'}]},
+  {n:'P2', t:'Build the Base', w:'Weeks 3 to 4',
+   goal:'Add load and a little more depth. Closed-chain strength. Pain-free throughout.',
+   lower:[
+    {name:'Leg press, progress depth and load', target:'3 x 10', eq:'machine', cue:'Go a little deeper than P1. Heel drive, knees out.'},
+    {name:'Lying leg curl, heavier', target:'3 x 10', eq:'machine', cue:'Add weight but keep it slow and controlled.'},
+    {name:'Hip abductor machine', target:'3 x 15', eq:'machine', cue:'Push knees out. Keep building that glute.'},
+    {name:'Cable TKE, heavier', target:'3 x 12', eq:'cable', cue:'Add resistance. Full lockout every rep.'},
+    {name:'Leg extension, top 30 degrees only, light', target:'3 x 12', eq:'machine', cue:'ONLY the top range, light. Protects the graft.'},
+    {name:'Smith machine squat to box', target:'3 x 10', eq:'machine', cue:'Sit back to the box, stand up. The box controls your depth.'},
+    {name:'Calf press on leg press', target:'3 x 15', eq:'machine', cue:'Full stretch at the bottom, full squeeze at the top.'},
+    {name:'Single-leg balance, harder surface', target:'3 x 30 sec', eq:'body', cue:'Stand on a pad or cushion. Builds deeper stability.'}],
+   upper:[
+    {name:'Flat DB or machine press', target:'3 x 10', eq:'free', cue:'Control the dumbbells, full range.'},
+    {name:'One-arm cable row', target:'3 x 10 / side', eq:'cable', cue:'Pull and squeeze, one side at a time for balance.'},
+    {name:'DB overhead press', target:'3 x 10', eq:'free', cue:'Press smooth, brace core, do not arch your back.'},
+    {name:'Lat pulldown, close grip', target:'3 x 12', eq:'cable', cue:'Pull to chest, squeeze the lats.'},
+    {name:'Cable face pull', target:'3 x 15', eq:'cable', cue:'Shoulder health, pull to your face.'},
+    {name:'Pallof press', target:'3 x 10 / side', eq:'cable', cue:'Anti-rotation core. Resist the pull, press straight out.'},
+    {name:'Side plank', target:'3 x 20 sec / side', eq:'body', cue:'Stack your hips, straight line. Builds lateral core.'}]},
+  {n:'P3', t:'Strengthen and Load', w:'Weeks 5 to 6',
+   goal:'Real strength work. More depth, heavier loads, single-leg progressions. Pain-free only.',
+   lower:[
+    {name:'Leg press, heavier and more depth', target:'3 x 8-10', eq:'machine', cue:'Load it up. Heel drive, control the depth.'},
+    {name:'DB Romanian deadlift', target:'3 x 10', eq:'free', cue:'Hinge at the hips, soft knees, feel the hamstring stretch.'},
+    {name:'Leg curl, heavier', target:'3 x 10', eq:'machine', cue:'Heavy but controlled. No swinging.'},
+    {name:'Step-up onto bench with DBs', target:'3 x 8 / leg', eq:'free', cue:'Drive through the top foot. Control the way down slowly.'},
+    {name:'Goblet squat', target:'3 x 8-10', eq:'free', cue:'Hold the DB at your chest, sit between your hips, knees out.'},
+    {name:'Single-leg press, light', target:'3 x 8 / leg', eq:'machine', cue:'One leg, light and controlled. Tests the knee safely.'},
+    {name:'Barbell or DB hip thrust', target:'3 x 10', eq:'free', cue:'Drive hips up, squeeze glutes hard at the top.'},
+    {name:'Single-leg calf raise', target:'3 x 12', eq:'body', cue:'Full range on one leg, hold something for balance.'}],
+   upper:[
+    {name:'DB or barbell bench press', target:'3 x 8-10', eq:'free', cue:'Control down, press up. Keep shoulders back.'},
+    {name:'Barbell or DB row', target:'3 x 8-10', eq:'free', cue:'Hinge, pull to stomach, squeeze.'},
+    {name:'Overhead press', target:'3 x 8-10', eq:'free', cue:'Press up, brace core, do not arch.'},
+    {name:'Lat pulldown or assisted pull-up', target:'3 x 10', eq:'cable', cue:'Full range, lead with the elbows.'},
+    {name:'Bicep curl', target:'3 x 12', eq:'free', cue:'No swinging, control both directions.'},
+    {name:'Cable tricep pushdown', target:'3 x 12', eq:'cable', cue:'Elbows pinned to your sides, full extension.'},
+    {name:'Cable chop', target:'3 x 10 / side', eq:'cable', cue:'Rotational core, controlled the whole way.'}]},
+  {n:'P4', t:'Integrate and Push', w:'Weeks 7 to 8',
+   goal:'Return-to-sport prep. No running, jumping, or cutting until PT or surgeon clears you.',
+   lower:[
+    {name:'Leg press, max load', target:'4 x 8', eq:'machine', cue:'Heaviest of the program. Still controlled, knees tracking.'},
+    {name:'Barbell Romanian deadlift', target:'3 x 8-10', eq:'free', cue:'Hip hinge, flat back, hamstring stretch.'},
+    {name:'Leg curl, heavier', target:'3 x 10', eq:'machine', cue:'Keep loading the hamstring.'},
+    {name:'Bulgarian split squat, Smith machine', target:'3 x 8 / leg', eq:'machine', cue:'Back foot up, drop straight down, drive up. Smith controls balance.'},
+    {name:'Eccentric step-down off bench', target:'3 x 8 / leg', eq:'body', cue:'Slow 3-count lowering. Builds real knee control.'},
+    {name:'Lateral band walk', target:'3 x 12 / side', eq:'band', cue:'Band around knees, side steps, keep tension the whole time.'},
+    {name:'Single-leg RDL with DB', target:'3 x 8 / leg', eq:'free', cue:'Hinge on one leg, control the balance, hamstring focus.'},
+    {name:'Barbell hip thrust, heavier', target:'3 x 10', eq:'free', cue:'Heavy hip drive, full glute squeeze.'}],
+   upper:[
+    {name:'Bench press, progress load', target:'4 x 6-8', eq:'free', cue:'Heavier, still controlled.'},
+    {name:'Row, progress load', target:'4 x 6-8', eq:'free', cue:'Heavier, squeeze every rep.'},
+    {name:'Overhead press', target:'3 x 8', eq:'free', cue:'Brace and press.'},
+    {name:'Pull-ups or lat pulldown', target:'3 x 8-10', eq:'body', cue:'Full hang to chin over the bar, or assisted.'},
+    {name:'DB incline press', target:'3 x 8', eq:'free', cue:'Upper chest focus, control down.'},
+    {name:'Farmer carries, heavy', target:'3 x 30 sec', eq:'free', cue:'Heavy DBs, walk tall, brace core. Great for everything.'},
+    {name:'RKC plank', target:'3 x 30 sec', eq:'body', cue:'Max tension, squeeze everything for the full 30 sec.'}]}
+];
+
+var EQ_LABEL = {machine:'Machine', free:'Free weights', cable:'Cable', band:'Bands', body:'Bodyweight'};
+
+var FOODS = [
+  {n:'2 Eggs', p:12, c:1, f:10},
+  {n:'Greek yogurt', p:23, c:9, f:0},
+  {n:'Cottage cheese', p:24, c:8, f:5},
+  {n:'Chicken 6oz', p:52, c:0, f:6},
+  {n:'Salmon 6oz', p:40, c:0, f:13},
+  {n:'Whey shake', p:25, c:3, f:1},
+  {n:'Lentils 1cup', p:18, c:40, f:1},
+  {n:'Tuna can', p:27, c:0, f:1}
+];
+
+function sg(k, fb) { try { var r = localStorage.getItem(k); return r !== null ? JSON.parse(r) : fb; } catch(e) { return fb; } }
+function ss(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
+
+var state, profile, tracker, dayList, exLog, openPhase = -1, foodEditMode = false;
+var pepLog, vials, rbLog, rbCardio, rbChecks, kneeLog, medLog, tapeLog;
+var calcCompound = 'KLOW', medTimer = null, medRemain = 0, medTotal = 0, medPaused = false, rbOpenPhase = -1, rbSess = 'A', rbRenderedEff = 1;
+
+function newDay() {
+  return { retaDose:'', retaUnits:'', retaTime:'', retaSite:'', retaFeel:'', retaSides:[],
+    pepsDose:'', pepsUnits:'', pepsTime:'', pepsSite:'', pepsFeel:'', pepsNotes:'',
+    energy:3, sleep:3, knee:3, weight:'', workoutTime:'',
+    supps:{}, checks:{}, meals:[false,false,false,false], foods:[], notes:'' };
+}
+
+var initErrors = [];
+function safeStep(label, fn) {
+  try { fn(); } catch(e) { initErrors.push(label); if (window.console && console.error) console.error('startup step failed:', label, e); }
+}
+function showInitError() {
+  if (!initErrors.length) return;
+  try {
+    var sc = document.getElementById('scroll');
+    if (!sc || document.getElementById('init-err')) return;
+    var b = document.createElement('div');
+    b.id = 'init-err';
+    b.style.cssText = 'background:#FAE8E4;color:#B84B30;border-radius:12px;padding:12px 14px;margin:0 0 12px;font-size:13px;line-height:1.5;font-weight:600;';
+    b.textContent = 'Some saved data could not load, so part of the app reset to defaults. Everything still works. Tap Back up on the History tab to save a clean copy.';
+    sc.insertBefore(b, sc.firstChild);
+  } catch(e) {}
+}
+
+function init() {
+  setTimeout(showInitError, 50);
+  safeStep('header-date', function(){
+    var dt = new Date(TODAY+'T12:00:00');
+    document.getElementById('hdr-date').textContent = dt.toLocaleDateString('en-US', {weekday:'long', month:'short', day:'numeric'});
+  });
+  safeStep('check-total', function(){ document.getElementById('check-total').textContent = CHECKS.length; });
+
+  safeStep('load-data', function(){
+    profile = sg('profile', {});
+    if (!profile || typeof profile !== 'object') profile = {};
+    ['curW','goalW','proteinT','carbT','fatT'].forEach(function(k){ if (profile[k]===undefined) profile[k]=''; });
+    if (!Array.isArray(profile.myFoods) || !profile.myFoods.length) profile.myFoods = FOODS.map(function(f){ return {n:f.n,p:f.p,c:f.c,f:f.f}; });
+    if (!profile.calc || typeof profile.calc !== 'object') profile.calc = { compound:'KLOW', vialMg:'', bac:'', syr:100, mode:'u2d', doseUnit:'mcg' };
+    if (!profile.rbUnlocked) profile.rbUnlocked = 1;
+    if (!profile.rbKneeFlags || typeof profile.rbKneeFlags !== 'object') profile.rbKneeFlags = {};
+    if (profile.cardioGoal===undefined) profile.cardioGoal = '';
+    if (profile.medReminder===undefined) profile.medReminder = '';
+
+    tracker = sg('tracker', {}); if (!tracker || typeof tracker!=='object') tracker = {};
+    exLog = sg('exLog', {}); if (!exLog || typeof exLog!=='object') exLog = {};
+    rbLog = sg('rbLog', {}); if (!rbLog || typeof rbLog!=='object') rbLog = {};
+    vials = sg('vials', {}); if (!vials || typeof vials!=='object') vials = {};
+    rbChecks = sg('rbChecks', {}); if (!rbChecks || typeof rbChecks!=='object') rbChecks = {};
+
+    pepLog = sg('pepLog', []); if (!Array.isArray(pepLog)) pepLog = [];
+    rbCardio = sg('rbCardio', []); if (!Array.isArray(rbCardio)) rbCardio = [];
+    kneeLog = sg('kneeLog', []); if (!Array.isArray(kneeLog)) kneeLog = [];
+    medLog = sg('medLog', []); if (!Array.isArray(medLog)) medLog = [];
+    tapeLog = sg('tapeLog', []); if (!Array.isArray(tapeLog)) tapeLog = [];
+
+    state = sg('day:'+TODAY, newDay());
+    if (!state || typeof state !== 'object') state = newDay();
+    if (state.klowDose && !state.pepsDose) state.pepsDose = state.klowDose;
+    if (state.klowNotes && !state.pepsNotes) state.pepsNotes = state.klowNotes;
+    if (!state.supps || typeof state.supps!=='object') state.supps = {};
+    if (!Array.isArray(state.foods)) state.foods = [];
+    if (!Array.isArray(state.meals)) state.meals = [false,false,false,false];
+    if (!state.checks || typeof state.checks!=='object') state.checks = {};
+    if (!Array.isArray(state.retaSides)) state.retaSides = [];
+
+    dayList = sg('dayList', []); if (!Array.isArray(dayList)) dayList = [];
+    if (dayList.indexOf(TODAY) === -1) dayList = [TODAY].concat(dayList).slice(0,90);
+
+    ss('profile', profile); ss('dayList', dayList);
+  });
+
+  if (!profile || typeof profile!=='object') profile = { curW:'',goalW:'',proteinT:'',carbT:'',fatT:'', myFoods: FOODS.map(function(f){return {n:f.n,p:f.p,c:f.c,f:f.f};}), calc:{compound:'KLOW',vialMg:'',bac:'',syr:100,mode:'u2d',doseUnit:'mcg'}, rbUnlocked:1, rbKneeFlags:{}, cardioGoal:'', medReminder:'' };
+  if (!tracker) tracker = {}; if (!exLog) exLog = {}; if (!rbLog) rbLog = {}; if (!vials) vials = {}; if (!rbChecks) rbChecks = {};
+  if (!Array.isArray(pepLog)) pepLog = []; if (!Array.isArray(rbCardio)) rbCardio = []; if (!Array.isArray(kneeLog)) kneeLog = []; if (!Array.isArray(medLog)) medLog = []; if (!Array.isArray(tapeLog)) tapeLog = [];
+  if (!state || typeof state!=='object') state = newDay(); if (!Array.isArray(dayList)) dayList = [TODAY];
+
+  safeStep('checklist', buildChecklist);
+  safeStep('sides', buildSides);
+  safeStep('supps', buildSupps);
+  safeStep('quickadd', buildQuickAdd);
+  safeStep('tracker', buildTracker);
+  safeStep('phases', buildPhases);
+  safeStep('compounds', buildCompounds);
+  safeStep('calc-buttons', buildCalcButtons);
+  safeStep('knee-menu', buildKneeMenu);
+  safeStep('knee-select', buildKneeSelect);
+  safeStep('default-dates', setDefaultDates);
+  safeStep('load-state', loadState);
+  safeStep('pep-log', renderPepLog);
+  safeStep('knee-log', renderKneeLog);
+  safeStep('knee-trend', renderKneeTrend);
+  safeStep('med-all', renderMedAll);
+  safeStep('med-reminder', renderMedReminder);
+  safeStep('rebuild', buildRebuild);
+  safeStep('rb-week', renderRbWeek);
+  safeStep('cardio-goal-field', function(){ if (profile.cardioGoal) { var el=document.getElementById('rb-cardio-goal'); if(el) el.value=profile.cardioGoal; } });
+  safeStep('dash', renderDash);
+  safeStep('tape', renderTape);
+
+  showInitError();
+}
+
+function loadState() {
+  setNum('energy', state.energy||3, 5, false);
+  setNum('sleep', state.sleep||3, 5, false);
+  setNum('knee', state.knee!==undefined?state.knee:3, 10, true);
+  ['weight','workoutTime','retaDose','retaUnits','retaTime','retaSite','retaFeel','pepsDose','pepsUnits','pepsTime','pepsSite','pepsFeel','pepsNotes','notes'].forEach(function(f) {
+    var el = document.getElementById('inp-'+f); if (el && state[f]) el.value = state[f];
+  });
+  updateSides(); updateChecks(); updateSupps();
+  if (profile.curW) document.getElementById('inp-curW').value = profile.curW;
+  if (profile.goalW) document.getElementById('inp-goalW').value = profile.goalW;
+  if (profile.proteinT) document.getElementById('inp-proteinT').value = profile.proteinT;
+  if (profile.carbT) document.getElementById('inp-carbT').value = profile.carbT;
+  if (profile.fatT) document.getElementById('inp-fatT').value = profile.fatT;
+  calcMacros(); renderFoods(); updateTracker();
+}
+
+function save() { ss('day:'+TODAY, state); }
+function sf(k, v) { state[k] = v; save(); }
+function sp(k, v) { profile[k] = v; ss('profile', profile); }
+
+function setNum(key, val, max, isKnee) {
+  document.getElementById('val-'+key).textContent = val;
+  var bars = document.getElementById('bars-'+key); bars.innerHTML = '';
+  var col = isKnee ? (val <= 3 ? 'var(--ok)' : val <= 5 ? 'var(--a)' : 'var(--red)') : 'var(--g)';
+  for (var i = 0; i < max; i++) { var s = document.createElement('div'); s.className = 'bar-seg'; s.style.background = i < val ? col : 'var(--faint)'; bars.appendChild(s); }
+  if (isKnee) { document.getElementById('val-knee').style.color = col; var b = document.querySelector('[onclick="adj(\'knee\',1,0,10)"]'); if (b) { b.style.background = col; b.style.borderColor = col; } }
+}
+function adj(key, delta, min, max) { var cur = state[key] !== undefined ? state[key] : 3; state[key] = Math.min(max, Math.max(min, cur + delta)); setNum(key, state[key], max, key === 'knee'); save(); if(key==='knee') renderDash(); }
+
+function buildSides() { var a = document.getElementById('sides-area'); if(!a) return; SIDES.forEach(function(s) { var b = document.createElement('button'); b.className='tag'; b.textContent=s; b.dataset.side=s; b.onclick=function(){toggleSide(s);}; a.appendChild(b); }); }
+function toggleSide(s) { var arr = state.retaSides||[]; state.retaSides = arr.indexOf(s)>-1?arr.filter(function(x){return x!==s;}):arr.concat([s]); updateSides(); save(); }
+function updateSides() { document.querySelectorAll('.tag[data-side]').forEach(function(b){ b.classList.toggle('on',(state.retaSides||[]).indexOf(b.dataset.side)>-1); }); }
+
+function buildSupps() {
+  var a = document.getElementById('supps-area');
+  SUPPS.forEach(function(s) {
+    var row = document.createElement('div'); row.className='supp-row';
+    row.innerHTML = '<div><div class="supp-row-name">'+s.n+'</div><div class="supp-row-when">'+s.w+'</div></div>'
+      +'<div class="ampm"><button class="ampm-btn" id="am-'+s.id+'" onclick="toggleSupp(\''+s.id+'\',\'am\')">AM</button><button class="ampm-btn" id="pm-'+s.id+'" onclick="toggleSupp(\''+s.id+'\',\'pm\')">PM</button></div>';
+    a.appendChild(row);
+  });
+}
+function toggleSupp(id, slot) {
+  state.supps = state.supps || {};
+  state.supps[id] = state.supps[id] || {am:false, pm:false};
+  state.supps[id][slot] = !state.supps[id][slot];
+  document.getElementById(slot+'-'+id).classList.toggle('on', state.supps[id][slot]);
+  save();
+}
+function updateSupps() {
+  SUPPS.forEach(function(s) {
+    var v = (state.supps && state.supps[s.id]) || {};
+    document.getElementById('am-'+s.id).classList.toggle('on', !!v.am);
+    document.getElementById('pm-'+s.id).classList.toggle('on', !!v.pm);
+  });
+}
+
+function buildChecklist() {
+  var area = document.getElementById('checklist-area');
+  var groups = []; CHECKS.forEach(function(c){ if(groups.indexOf(c.g)===-1) groups.push(c.g); });
+  groups.forEach(function(g) {
+    var lbl = document.createElement('div'); lbl.className='g-lbl'; lbl.textContent=g; area.appendChild(lbl);
+    CHECKS.filter(function(c){return c.g===g;}).forEach(function(c) {
+      var row = document.createElement('div'); row.className='check-row'; row.dataset.cid=c.id;
+      row.innerHTML='<div class="chk" id="chk-'+c.id+'">'+CHECK_SVG+'</div><div><div class="ck-text" id="ckt-'+c.id+'">'+c.t+'</div>'+(c.s?'<div class="ck-sub">'+c.s+'</div>':'')+'</div>';
+      row.onclick=function(){toggleCheck(c.id);}; area.appendChild(row);
+    });
+  });
+}
+function toggleCheck(id) { state.checks = state.checks||{}; state.checks[id] = !state.checks[id]; updateOneCheck(id); updateCheckCount(); save(); }
+function updateOneCheck(id) { var on = !!(state.checks&&state.checks[id]); var c=document.getElementById('chk-'+id); var t=document.getElementById('ckt-'+id); if(c)c.classList.toggle('on',on); if(t)t.className='ck-text'+(on?' ck-done':''); }
+function updateChecks() { CHECKS.forEach(function(c){updateOneCheck(c.id);}); updateCheckCount(); }
+function updateCheckCount() { var done = CHECKS.filter(function(c){return state.checks&&state.checks[c.id];}).length; document.getElementById('check-count').textContent=done; }
+
+function macroTargets() {
+  var goal = parseFloat(profile.goalW)||0;
+  var pT = profile.proteinT!=='' && profile.proteinT!=null ? parseFloat(profile.proteinT) : (goal>0?goal:0);
+  var cT = profile.carbT!=='' && profile.carbT!=null ? parseFloat(profile.carbT) : (goal>0?Math.round(goal*0.8):0);
+  var fT = profile.fatT!=='' && profile.fatT!=null ? parseFloat(profile.fatT) : (goal>0?Math.round(goal*0.4):0);
+  return { p:pT||0, c:cT||0, f:fT||0 };
+}
+function macroCals(p,c,f) { return Math.round(p*4 + c*4 + f*9); }
+
+function myFoods() { return (profile.myFoods && profile.myFoods.length) ? profile.myFoods : FOODS; }
+
+function buildQuickAdd() {
+  var a = document.getElementById('qa-area');
+  a.innerHTML = '';
+  var foods = myFoods();
+  if (!foodEditMode) {
+    foods.forEach(function(fd) {
+      var b = document.createElement('button'); b.className='qa-chip';
+      b.innerHTML = '<div class="qn">'+fd.n+'</div><div class="qm">'+fd.p+'P &middot; '+fd.c+'C &middot; '+fd.f+'F</div>';
+      b.onclick = function(){ addFood(fd.n, fd.p, fd.c, fd.f); };
+      a.appendChild(b);
+    });
+    return;
+  }
+  foods.forEach(function(fd, i) {
+    var row = document.createElement('div'); row.className='qa-erow';
+    row.innerHTML =
+      '<input class="qa-ename" type="text" value="'+(fd.n||'').replace(/"/g,'&quot;')+'" placeholder="Name" oninput="saveStaple('+i+',\'n\',this.value)">'
+      +'<div class="qa-emacros">'
+        +'<div><div class="qa-mini-lbl">Protein</div><input type="number" inputmode="decimal" value="'+fd.p+'" oninput="saveStaple('+i+',\'p\',this.value)"></div>'
+        +'<div><div class="qa-mini-lbl">Carbs</div><input type="number" inputmode="decimal" value="'+fd.c+'" oninput="saveStaple('+i+',\'c\',this.value)"></div>'
+        +'<div><div class="qa-mini-lbl">Fat</div><input type="number" inputmode="decimal" value="'+fd.f+'" oninput="saveStaple('+i+',\'f\',this.value)"></div>'
+        +'<span class="qa-del" onclick="removeStaple('+i+')">Remove</span>'
+      +'</div>';
+    a.appendChild(row);
+  });
+}
+
+function toggleFoodEdit() {
+  foodEditMode = !foodEditMode;
+  document.getElementById('qa-toggle').textContent = foodEditMode ? 'Done' : 'Edit';
+  document.getElementById('qa-label').textContent = foodEditMode ? 'Edit your staples' : 'Quick add your staples';
+  document.getElementById('qa-controls').style.display = foodEditMode ? 'flex' : 'none';
+  buildQuickAdd();
+}
+
+function saveStaple(i, field, val) {
+  if (!profile.myFoods) return;
+  profile.myFoods[i][field] = (field === 'n') ? val : (parseFloat(val) || 0);
+  ss('profile', profile);
+}
+function addStaple() {
+  profile.myFoods = myFoods().slice();
+  profile.myFoods.push({ n:'New food', p:0, c:0, f:0 });
+  ss('profile', profile);
+  buildQuickAdd();
+}
+function removeStaple(i) {
+  profile.myFoods.splice(i, 1);
+  ss('profile', profile);
+  buildQuickAdd();
+}
+function resetStaples() {
+  if (!confirm('Reset your staples back to the original list? Your logged food is not affected.')) return;
+  profile.myFoods = FOODS.map(function(f){ return {n:f.n,p:f.p,c:f.c,f:f.f}; });
+  ss('profile', profile);
+  buildQuickAdd();
+}
+
+function addFood(name, p, c, f) {
+  state.foods = state.foods || [];
+  state.foods.push({ n:name||'Food', p:parseFloat(p)||0, c:parseFloat(c)||0, f:parseFloat(f)||0 });
+  save(); renderFoods(); calcMacros();
+}
+function addFoodCustom() {
+  var n = document.getElementById('fa-name').value;
+  var p = document.getElementById('fa-p').value;
+  var c = document.getElementById('fa-c').value;
+  var f = document.getElementById('fa-f').value;
+  if (!p && !c && !f) return;
+  addFood(n, p, c, f);
+  document.getElementById('fa-name').value=''; document.getElementById('fa-p').value=''; document.getElementById('fa-c').value=''; document.getElementById('fa-f').value='';
+}
+function removeFood(i) { state.foods.splice(i,1); save(); renderFoods(); calcMacros(); }
+
+function renderFoods() {
+  var box = document.getElementById('food-list');
+  var foods = state.foods || [];
+  if (!foods.length) { box.innerHTML = '<div class="food-empty">No food logged yet. Tap a staple above or add custom.</div>'; return; }
+  box.innerHTML = foods.map(function(fd, i) {
+    return '<div class="food-item"><div><div class="fi-name">'+fd.n+'</div><div class="fi-macros">'+fd.p+'P &middot; '+fd.c+'C &middot; '+fd.f+'F &middot; '+macroCals(fd.p,fd.c,fd.f)+' cal</div></div><span class="fi-del" data-fi="'+i+'">remove</span></div>';
+  }).join('');
+  box.querySelectorAll('.fi-del').forEach(function(d){ d.onclick=function(){ removeFood(parseInt(d.dataset.fi)); }; });
+}
+
+function calcMacros() {
+  var cur = parseFloat(profile.curW)||0;
+  var t = macroTargets();
+  var foods = state.foods || [];
+  var sp=0, sc=0, sf=0;
+  foods.forEach(function(fd){ sp+=fd.p||0; sc+=fd.c||0; sf+=fd.f||0; });
+  var water = cur>0?Math.round(cur/2):0;
+  document.getElementById('p-water').textContent = water||'--';
+  document.getElementById('p-caltarget').textContent = (t.p||t.c||t.f)?macroCals(t.p,t.c,t.f):'--';
+  document.getElementById('inp-proteinT').placeholder = t.p||'auto';
+  document.getElementById('inp-carbT').placeholder = t.c||'auto';
+  document.getElementById('inp-fatT').placeholder = t.f||'auto';
+  document.getElementById('m-p').textContent = Math.round(sp);
+  document.getElementById('m-c').textContent = Math.round(sc);
+  document.getElementById('m-f').textContent = Math.round(sf);
+  document.getElementById('m-ptgt').textContent = t.p||'--';
+  document.getElementById('m-ctgt').textContent = t.c||'--';
+  document.getElementById('m-ftgt').textContent = t.f||'--';
+  document.getElementById('m-cal').textContent = macroCals(sp,sc,sf);
+  document.getElementById('m-caltgt').textContent = (t.p||t.c||t.f)?macroCals(t.p,t.c,t.f):'--';
+  function pct(v,tg){ return tg>0?Math.min(100,Math.round((v/tg)*100)):0; }
+  document.getElementById('m-pfill').style.width = pct(sp,t.p)+'%';
+  document.getElementById('m-cfill').style.width = pct(sc,t.c)+'%';
+  document.getElementById('m-ffill').style.width = pct(sf,t.f)+'%';
+}
+
+function buildTracker() {
+  var grid = document.getElementById('trk-grid');
+  ['Week','S1','S2','S3','S4'].forEach(function(h){ var d=document.createElement('div'); d.className='trk-hd'; d.textContent=h; grid.appendChild(d); });
+  for(var w=1;w<=8;w++){(function(wk){ var wl=document.createElement('div'); wl.className='trk-wk'; wl.textContent='Wk '+wk; grid.appendChild(wl); for(var s=1;s<=4;s++){(function(sn){ var key='w'+wk+'s'+sn; var el=document.createElement('div'); el.className='trk-dot'; el.id='trk-'+key; el.innerHTML=CHECK_SVG; el.onclick=function(){toggleSession(key);}; grid.appendChild(el); })(s);} })(w);}
+}
+function toggleSession(key) { tracker[key]=!tracker[key]; document.getElementById('trk-'+key).classList.toggle('on',!!tracker[key]); updateTracker(); ss('tracker',tracker); }
+function updateTracker() { var done=0; for(var k in tracker){if(tracker[k])done++;} document.getElementById('trk-count').textContent=done+' of 32 sessions'; for(var w=1;w<=8;w++){for(var s=1;s<=4;s++){var key='w'+w+'s'+s; var el=document.getElementById('trk-'+key); if(el)el.classList.toggle('on',!!tracker[key]);}} }
+
+function buildPhases() {
+  var area = document.getElementById('phases-area');
+  PHASES.forEach(function(ph, idx) {
+    var wrap = document.createElement('div'); wrap.style.borderBottom='1px solid var(--faint)'; wrap.style.paddingBottom='4px'; wrap.style.marginBottom='4px';
+    var hdr = document.createElement('div');
+    hdr.innerHTML = '<div class="phase-hdr" onclick="togglePhase('+idx+')"><div class="phase-num">'+ph.n+'</div><div><div class="phase-title">'+ph.t+'</div><div class="phase-weeks">'+ph.w+'</div></div><span class="phase-chev" id="pc-'+idx+'">&#9656;</span></div>';
+    wrap.appendChild(hdr.firstChild);
+    var body = document.createElement('div'); body.className='phase-body'; body.id='pb-'+idx;
+    var html = '<div class="phase-goal">'+ph.goal+'</div>';
+    html += '<div class="day-lbl">Sessions 1 and 3: Lower and knee</div>';
+    html += ph.lower.map(function(ex,i){ return exHTML(idx,'l',i,ex); }).join('');
+    html += '<div class="day-lbl">Sessions 2 and 4: Upper and core</div>';
+    html += ph.upper.map(function(ex,i){ return exHTML(idx,'u',i,ex); }).join('');
+    body.innerHTML = html;
+    wrap.appendChild(body);
+    area.appendChild(wrap);
+  });
+  rebindExercises();
+}
+
+function exHTML(phaseIdx, slot, exIdx, ex) {
+  var key = 'p'+phaseIdx+slot+exIdx;
+  return '<div class="ex">'
+    +'<div class="ex-head" data-ex="'+key+'">'
+      +'<div class="ex-main">'
+        +'<div class="ex-name">'+ex.name+'</div>'
+        +'<div class="ex-meta"><span class="eq-pill eq-'+ex.eq+'">'+EQ_LABEL[ex.eq]+'</span><span class="ex-target">'+ex.target+'</span></div>'
+        +'<div class="ex-cue">'+ex.cue+'</div>'
+        +'<div class="ex-last" id="exlast-'+key+'" style="display:none"></div>'
+      +'</div>'
+      +'<span class="ex-chev" id="exc-'+key+'">&#9656;</span>'
+    +'</div>'
+    +'<div class="ex-log" id="exl-'+key+'">'
+      +'<div class="ex-log-grid">'
+        +'<div><div class="field-lbl">Weight (lbs)</div><input type="number" inputmode="decimal" id="exw-'+key+'" placeholder="0"></div>'
+        +'<div><div class="field-lbl">Sets x reps</div><input type="text" id="exs-'+key+'" placeholder="3 x 10"></div>'
+        +'<button class="log-btn" data-logkey="'+key+'">Log</button>'
+      +'</div>'
+      +'<div class="ex-history" id="exh-'+key+'"></div>'
+    +'</div>'
+  +'</div>';
+}
+
+function rebindExercises() {
+  document.querySelectorAll('.ex-head').forEach(function(h){ h.onclick = function(){ toggleEx(h.dataset.ex); }; });
+  document.querySelectorAll('.log-btn[data-logkey]').forEach(function(b){ b.onclick = function(){ logExercise(b.dataset.logkey); }; });
+  PHASES.forEach(function(ph, pi){ ph.lower.forEach(function(_, i){ updateExLast('p'+pi+'l'+i); }); ph.upper.forEach(function(_, i){ updateExLast('p'+pi+'u'+i); }); });
+}
+
+function exLastHTML(key) {
+  var entries = exLog[key] || [];
+  if (!entries.length) return '';
+  var e = entries[0];
+  var dt = new Date(e.date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  var label = (e.weight?e.weight+' lb':'') + (e.weight&&e.sets?' x ':'') + (e.sets||'');
+  return '<span class="last-tag">LAST</span> '+label+' &middot; '+dt;
+}
+
+function updateExLast(key) {
+  var el = document.getElementById('exlast-'+key);
+  if (!el) return;
+  var html = exLastHTML(key);
+  el.innerHTML = html;
+  el.style.display = html ? 'inline-flex' : 'none';
+}
+
+function toggleEx(key) {
+  var log = document.getElementById('exl-'+key);
+  var chev = document.getElementById('exc-'+key);
+  var open = log.classList.toggle('open');
+  chev.classList.toggle('open', open);
+  if (open) renderExHistory(key);
+}
+
+function logExercise(key) {
+  var w = document.getElementById('exw-'+key).value;
+  var s = document.getElementById('exs-'+key).value;
+  if (!w && !s) return;
+  exLog[key] = exLog[key] || [];
+  exLog[key].unshift({ date: TODAY, weight: w, sets: s });
+  exLog[key] = exLog[key].slice(0, 20);
+  ss('exLog', exLog);
+  document.getElementById('exw-'+key).value = '';
+  document.getElementById('exs-'+key).value = '';
+  renderExHistory(key);
+  updateExLast(key);
+}
+
+function renderExHistory(key) {
+  var box = document.getElementById('exh-'+key);
+  var entries = exLog[key] || [];
+  if (!entries.length) { box.innerHTML = '<div class="ex-hist-empty">No entries yet. Log your first set above.</div>'; return; }
+  box.innerHTML = entries.map(function(e, i) {
+    var dt = new Date(e.date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    var label = (e.weight?e.weight+' lb':'') + (e.weight&&e.sets?' x ':'') + (e.sets||'');
+    return '<div class="ex-hist-item"><span class="v">'+label+'</span><span><span class="d">'+dt+'</span> <span class="ex-hist-del" data-del="'+key+'" data-i="'+i+'">remove</span></span></div>';
+  }).join('');
+  box.querySelectorAll('.ex-hist-del').forEach(function(d){ d.onclick = function(){ exLog[key].splice(parseInt(d.dataset.i),1); ss('exLog',exLog); renderExHistory(key); updateExLast(key); }; });
+}
+
+function togglePhase(idx) {
+  openPhase = openPhase === idx ? -1 : idx;
+  for (var i=0;i<PHASES.length;i++){ var b=document.getElementById('pb-'+i); var c=document.getElementById('pc-'+i); if(b)b.classList.toggle('open',i===openPhase); if(c)c.classList.toggle('open',i===openPhase); }
+}
+
+function switchTab(tab) {
+  ['today','protein','peps','rebuild','knee','med','workout','history'].forEach(function(t){ var p=document.getElementById('panel-'+t); if(p) p.classList.toggle('on',t===tab); });
+  document.querySelectorAll('.tab').forEach(function(b){ var oc=b.getAttribute('onclick')||''; b.classList.toggle('on', oc.indexOf("'"+tab+"'")>-1); });
+  try {
+    if (tab==='history') renderHistory();
+    if (tab==='peps') runCalc();
+    if (tab==='rebuild') { renderRbWeek(); renderRbChecklist(); }
+    if (tab==='knee') renderKneeTrend();
+    if (tab==='med') { renderMedAll(); renderMedReminder(); }
+    if (tab==='today') renderDash();
+    if (tab==='protein') renderTape();
+  } catch(e) { if (window.console && console.error) console.error('tab render failed:', tab, e); }
+  var sc=document.getElementById('scroll'); if(sc) sc.scrollTop = 0;
+}
+
+function fmtDateShort(d) { var dt=new Date(d+'T12:00:00'); return { wd:dt.toLocaleDateString('en-US',{weekday:'short'}), mo:dt.toLocaleDateString('en-US',{month:'short',day:'numeric'}) }; }
+
+function renderHistory() {
+  var sorted = dayList.slice().sort(function(a,b){return b.localeCompare(a);});
+  var recent = sorted.slice(0,14).map(function(d){return sg('day:'+d,null);}).filter(Boolean);
+  function avg(f){ return recent.length?(recent.reduce(function(s,d){return s+(d[f]||0);},0)/recent.length).toFixed(1):'--'; }
+  document.getElementById('avg-knee').textContent = avg('knee');
+  document.getElementById('avg-energy').textContent = avg('energy');
+  document.getElementById('avg-sleep').textContent = avg('sleep');
+  document.getElementById('avg-reta').textContent = recent.filter(function(d){return d.retaDose;}).length;
+  document.getElementById('avg-peps').textContent = recent.filter(function(d){return d.pepsDose||d.klowDose;}).length;
+  var list = document.getElementById('hist-list'); list.innerHTML = '';
+  if (!sorted.length) { list.innerHTML = '<div class="empty-hist">No history yet. Start logging on the Today tab.</div>'; return; }
+  sorted.forEach(function(date) {
+    var d = sg('day:'+date,null); if(!d) return;
+    var fd = fmtDateShort(date);
+    var kc = (d.knee||0)<=3?'var(--ok)':(d.knee||0)<=5?'var(--a)':'var(--red)';
+    var checksDone = CHECKS.filter(function(c){return d.checks&&d.checks[c.id];}).length;
+    var pepsD = d.pepsDose||d.klowDose||'';
+    var tags = (d.retaDose?'<span class="htag g">Reta '+d.retaDose+'mg</span>':'') + (pepsD?'<span class="htag a">PEPS '+pepsD+'mg</span>':'');
+    var compChecks = CHECKS.filter(function(c){return d.checks&&d.checks[c.id];}).map(function(c){return '<span class="cc">'+c.t+'</span>';}).join('');
+    var suppsTaken = SUPPS.filter(function(s){return d.supps&&d.supps[s.id]&&(d.supps[s.id].am||d.supps[s.id].pm);}).map(function(s){var v=d.supps[s.id];var w=(v.am?'AM':'')+(v.am&&v.pm?'/':'')+(v.pm?'PM':'');return '<span class="cc">'+s.n+' '+w+'</span>';}).join('');
+    var retaBlock = (d.retaDose||d.retaUnits||d.retaTime||d.retaFeel||(d.retaSides&&d.retaSides.length)) ? '<div class="detail-block"><b>Reta:</b> '+(d.retaDose?d.retaDose+'mg ':'')+(d.retaUnits?'('+d.retaUnits+'u) ':'')+(d.retaTime?'at '+d.retaTime+' ':'')+(d.retaSite?'['+d.retaSite+'] ':'')+(d.retaFeel?'&mdash; '+d.retaFeel:'')+((d.retaSides&&d.retaSides.length)?'<br>Side effects: '+d.retaSides.join(', '):'')+'</div>' : '';
+    var pepsFeel = d.pepsFeel||'', pepsNotes = d.pepsNotes||d.klowNotes||'';
+    var pepsBlock = (pepsD||d.pepsUnits||d.pepsTime||pepsFeel||pepsNotes) ? '<div class="detail-block"><b>PEPS:</b> '+(pepsD?pepsD+'mg ':'')+(d.pepsUnits?'('+d.pepsUnits+'u) ':'')+(d.pepsTime?'at '+d.pepsTime+' ':'')+(d.pepsSite?'['+d.pepsSite+'] ':'')+(pepsFeel?'&mdash; '+pepsFeel:'')+(pepsNotes?'<br>'+pepsNotes:'')+'</div>' : '';
+    var notes = d.notes?'<div class="detail-block"><b>Notes:</b> '+d.notes+'</div>':'';
+    var foods = d.foods || [];
+    var fp=0,fc=0,ff=0; foods.forEach(function(x){ fp+=x.p||0; fc+=x.c||0; ff+=x.f||0; });
+    var macroBlock = foods.length ? '<div class="detail-block"><b>Macros:</b> '+Math.round(fp)+'g P &middot; '+Math.round(fc)+'g C &middot; '+Math.round(ff)+'g F &middot; '+(Math.round(fp*4+fc*4+ff*9))+' cal <span style="color:var(--muted)">('+foods.length+' items)</span></div>' : '';
+    var card = document.createElement('div'); card.className='hist-card';
+    card.innerHTML = '<div class="hist-row">'
+      +'<div class="hist-date"><div class="wd">'+fd.wd+'</div><div class="mo">'+fd.mo+'</div></div>'
+      +'<div class="hist-info"><div class="hist-tags">'+tags+'</div><div class="hist-meta">Checks: '+checksDone+'/'+CHECKS.length+(foods.length?' &middot; '+Math.round(fp)+'g P':'')+(d.weight?' &middot; '+d.weight+' lbs':'')+(d.workoutTime?' &middot; lift '+d.workoutTime:'')+'</div></div>'
+      +'<div class="hist-knee"><div class="v" style="color:'+kc+'">'+(d.knee!==undefined?d.knee:'--')+'</div><div class="l">knee</div></div>'
+      +'<span style="color:var(--muted);font-size:14px;margin-left:4px" id="arr-'+date+'">&#9656;</span>'
+      +'</div>'
+      +'<div class="hist-detail" id="detail-'+date+'">'
+        +'<div class="detail-scores">'
+          +'<div class="dscore"><div class="v">'+(d.energy||'--')+'</div><div class="l">/ 5 energy</div></div>'
+          +'<div class="dscore"><div class="v">'+(d.sleep||'--')+'</div><div class="l">/ 5 sleep</div></div>'
+          +'<div class="dscore"><div class="v" style="color:'+kc+'">'+(d.knee!==undefined?d.knee:'--')+'</div><div class="l">/ 10 knee</div></div>'
+        +'</div>'
+        +retaBlock+pepsBlock+macroBlock+notes
+        +(suppsTaken?'<div style="font-size:11px;color:var(--muted);font-weight:600;margin:8px 0 4px">Supplements</div><div class="completed-checks">'+suppsTaken+'</div>':'')
+        +(compChecks?'<div style="font-size:11px;color:var(--muted);font-weight:600;margin:8px 0 4px">Checklist</div><div class="completed-checks">'+compChecks+'</div>':'')
+      +'</div>';
+    card.querySelector('.hist-row').addEventListener('click', function(){ var det=document.getElementById('detail-'+date); var open=det.classList.toggle('open'); document.getElementById('arr-'+date).style.transform=open?'rotate(90deg)':'none'; });
+    list.appendChild(card);
+  });
+}
+
+function exportCSV() {
+  var headers = ['Date','Reta mg','Reta units','Reta time','Reta site','Reta feel','Reta side effects','PEPS mg','PEPS units','PEPS time','PEPS site','PEPS feel','PEPS notes','Energy','Sleep','Knee pain','Weight','Workout time','Supps AM','Supps PM','Checks done','Protein g','Carbs g','Fat g','Calories','Notes'];
+  var rows = [headers];
+  var sorted = dayList.slice().sort(function(a,b){return b.localeCompare(a);});
+  sorted.forEach(function(date) {
+    var d = sg('day:'+date,null); if(!d) return;
+    var checksDone = CHECKS.filter(function(c){return d.checks&&d.checks[c.id];}).length;
+    var foods = d.foods || [];
+    var fp=0,fc=0,ff=0; foods.forEach(function(x){ fp+=x.p||0; fc+=x.c||0; ff+=x.f||0; });
+    var suppsAM = SUPPS.filter(function(s){return d.supps&&d.supps[s.id]&&d.supps[s.id].am;}).map(function(s){return s.n;}).join('; ');
+    var suppsPM = SUPPS.filter(function(s){return d.supps&&d.supps[s.id]&&d.supps[s.id].pm;}).map(function(s){return s.n;}).join('; ');
+    rows.push([date, d.retaDose||'', d.retaUnits||'', d.retaTime||'', d.retaSite||'', d.retaFeel||'', (d.retaSides||[]).join('; '),
+      d.pepsDose||d.klowDose||'', d.pepsUnits||'', d.pepsTime||'', d.pepsSite||'', d.pepsFeel||'', d.pepsNotes||d.klowNotes||'',
+      d.energy||'', d.sleep||'', d.knee!==undefined?d.knee:'', d.weight||'', d.workoutTime||'', suppsAM, suppsPM, checksDone,
+      foods.length?Math.round(fp):'', foods.length?Math.round(fc):'', foods.length?Math.round(ff):'', foods.length?Math.round(fp*4+fc*4+ff*9):'', d.notes||'']);
+  });
+  var elKeys = Object.keys(exLog);
+  if (elKeys.length) {
+    rows.push([]); rows.push(['EXERCISE LOG']); rows.push(['Exercise key','Date','Weight (lbs)','Sets x reps']);
+    elKeys.forEach(function(k){ (exLog[k]||[]).forEach(function(e){ rows.push([k, e.date, e.weight||'', e.sets||'']); }); });
+  }
+  var foodRows = [];
+  sorted.forEach(function(date){ var d=sg('day:'+date,null); if(d&&d.foods&&d.foods.length){ d.foods.forEach(function(x){ foodRows.push([date, x.n||'', x.p||0, x.c||0, x.f||0, macroCals(x.p||0,x.c||0,x.f||0)]); }); } });
+  if (foodRows.length) {
+    rows.push([]); rows.push(['FOOD LOG']); rows.push(['Date','Food','Protein g','Carbs g','Fat g','Calories']);
+    foodRows.forEach(function(r){ rows.push(r); });
+  }
+  if (pepLog && pepLog.length) {
+    rows.push([]); rows.push(['PEPTIDE LOG']); rows.push(['Date','Time','Compound','Dose','Units','Site','Notes']);
+    pepLog.forEach(function(e){ rows.push([e.date,e.time||'',e.compound||'',e.dose||'',e.units||'',e.site||'',e.notes||'']); });
+  }
+  if (kneeLog && kneeLog.length) {
+    rows.push([]); rows.push(['KNEE REHAB LOG']); rows.push(['Date','Exercise','Sets','Reps','Pain before','Pain after','Notes']);
+    kneeLog.forEach(function(e){ rows.push([e.date,e.exercise||'',e.sets||'',e.reps||'',e.pb,e.pa,e.notes||'']); });
+  }
+  if (medLog && medLog.length) {
+    rows.push([]); rows.push(['MEDITATION LOG']); rows.push(['Date','AM/PM','Minutes','Did it','Notes']);
+    medLog.forEach(function(e){ rows.push([e.date,e.ampm||'',e.dur||'',e.did?'yes':'no',e.notes||'']); });
+  }
+  var rbKeys = rbLog?Object.keys(rbLog):[];
+  if (rbKeys.length || (rbCardio&&rbCardio.length)) {
+    rows.push([]); rows.push(['REBUILD STRENGTH LOG']); rows.push(['Exercise','Date','Weight','Sets','Reps','Effort','Notes']);
+    function rbNm(key){ var m=key.match(/^rb(\d+)([AB])(\d+)$/); if(!m) return key; var ph=RB_PHASES[+m[1]]; return ph?(ph.n+' '+m[2]+': '+ph[m[2]][+m[3]].name):key; }
+    rbKeys.forEach(function(k){ (rbLog[k]||[]).forEach(function(e){ rows.push([rbNm(k),e.date,e.weight||'',e.sets||'',e.reps||'',e.effort||'',e.notes||'']); }); });
+    if (rbCardio && rbCardio.length) { rows.push([]); rows.push(['REBUILD CARDIO LOG']); rows.push(['Date','Minutes','Type']); rbCardio.forEach(function(e){ rows.push([e.date,e.minutes||'',e.type||'']); }); }
+  }
+  var csv = rows.map(function(r){ return r.map(function(c){ return '"'+String(c).replace(/"/g,'""')+'"'; }).join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a'); a.href=url; a.download='comeback-log-'+TODAY+'.csv'; a.click(); URL.revokeObjectURL(url);
+}
+
+/* ============================================================
+   NEW: Peptides, Rebuild, Knee, Meditation
+   ============================================================ */
+
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function painColor(v) { v=parseFloat(v)||0; return v<=3?'var(--ok)':v<=5?'var(--a)':'var(--red)'; }
+function fmtMD(d) { return new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
+function nowHM() { var d=new Date(); return (''+d.getHours()).padStart(2,'0')+':'+(''+d.getMinutes()).padStart(2,'0'); }
+function daysBetween(a,b) { return Math.round((new Date(b+'T12:00:00') - new Date(a+'T12:00:00'))/86400000); }
+
+function setDefaultDates() {
+  ['pl-date','kn-date','md-date'].forEach(function(id){ var el=document.getElementById(id); if(el&&!el.value) el.value=TODAY; });
+  var t=document.getElementById('pl-time'); if(t&&!t.value) t.value=nowHM();
+}
+
+/* ---------- PEPTIDES ---------- */
+var COMPOUNDS = ['Selank','Semax','Ipamorelin','KLOW','Reta'];
+var VIAL_OPTS = [5,10,15];
+var BAC_OPTS = [1,2,3];
+var SYR_OPTS = [{v:30,l:'0.3 mL / 30u'},{v:50,l:'0.5 mL / 50u'},{v:100,l:'1 mL / 100u'}];
+
+function curCalc() { profile.calc = profile.calc || {compound:'KLOW',vialMg:'',bac:'',syr:100,mode:'u2d',doseUnit:'mcg'}; return profile.calc; }
+function saveCalc() { ss('profile', profile); }
+
+function buildCompounds() {
+  var a = document.getElementById('cmp-area'); a.innerHTML='';
+  COMPOUNDS.forEach(function(c){
+    var b=document.createElement('button'); b.className='cmp-chip'+(curCalc().compound===c?' on':''); b.textContent=c; b.dataset.cmp=c;
+    b.onclick=function(){ selectCompound(c); }; a.appendChild(b);
+  });
+}
+function selectCompound(c) {
+  curCalc().compound = c; saveCalc();
+  document.querySelectorAll('.cmp-chip').forEach(function(b){ b.classList.toggle('on', b.dataset.cmp===c); });
+  var v = vials[c];
+  curCalc().vialMg = v? v.mg : curCalc().vialMg;
+  curCalc().bac = v? v.bac : curCalc().bac;
+  buildCalcButtons(); runCalc();
+}
+function buildCalcButtons() {
+  var cc = curCalc();
+  var vb=document.getElementById('vial-btns'); vb.innerHTML='';
+  VIAL_OPTS.forEach(function(v){ var b=document.createElement('button'); b.className='qbtn'+(parseFloat(cc.vialMg)===v?' on':''); b.textContent=v+' mg'; b.onclick=function(){ setVialMg(v); }; vb.appendChild(b); });
+  var ci=document.createElement('input'); ci.type='number'; ci.inputMode='decimal'; ci.className='qbtn-custom'; ci.placeholder='custom'; ci.id='vial-custom'; if(cc.vialMg&&VIAL_OPTS.indexOf(parseFloat(cc.vialMg))===-1) ci.value=cc.vialMg; ci.oninput=function(){ setVialMg(this.value,true); }; vb.appendChild(ci);
+  var bb=document.getElementById('bac-btns'); bb.innerHTML='';
+  BAC_OPTS.forEach(function(v){ var b=document.createElement('button'); b.className='qbtn'+(parseFloat(cc.bac)===v?' on':''); b.textContent=v+' mL'; b.onclick=function(){ setBac(v); }; bb.appendChild(b); });
+  var bi=document.createElement('input'); bi.type='number'; bi.inputMode='decimal'; bi.className='qbtn-custom'; bi.placeholder='custom'; bi.id='bac-custom'; if(cc.bac&&BAC_OPTS.indexOf(parseFloat(cc.bac))===-1) bi.value=cc.bac; bi.oninput=function(){ setBac(this.value,true); }; bb.appendChild(bi);
+  var sb=document.getElementById('syr-btns'); sb.innerHTML='';
+  SYR_OPTS.forEach(function(o){ var b=document.createElement('button'); b.className='qbtn'+(cc.syr===o.v?' on':''); b.textContent=o.l; b.onclick=function(){ setSyr(o.v); }; sb.appendChild(b); });
+}
+function setVialMg(v, custom) { curCalc().vialMg = v; saveCalc(); if(!custom) buildCalcButtons(); runCalc(); }
+function setBac(v, custom) { curCalc().bac = v; saveCalc(); if(!custom) buildCalcButtons(); runCalc(); }
+function setSyr(v) { curCalc().syr = v; saveCalc(); buildCalcButtons(); runCalc(); }
+function setCalcMode(m) { curCalc().mode=m; saveCalc(); document.getElementById('mode-u2d').classList.toggle('on',m==='u2d'); document.getElementById('mode-d2u').classList.toggle('on',m==='d2u'); document.getElementById('calc-input-u2d').style.display=m==='u2d'?'block':'none'; document.getElementById('calc-input-d2u').style.display=m==='d2u'?'block':'none'; runCalc(); }
+function setDoseUnit(u) { curCalc().doseUnit=u; saveCalc(); document.getElementById('du-mcg').classList.toggle('on',u==='mcg'); document.getElementById('du-mg').classList.toggle('on',u==='mg'); runCalc(); }
+
+var lastCalc = { doseMg:0, units:0 };
+function runCalc() {
+  var cc = curCalc();
+  var mg = parseFloat(cc.vialMg)||0, bac = parseFloat(cc.bac)||0, cap = cc.syr||100;
+  var warn = document.getElementById('calc-warn-area'); warn.innerHTML='';
+  var main = document.getElementById('calc-main'), mainL = document.getElementById('calc-main-l'), sub2 = document.getElementById('calc-sub2');
+  if (mg<=0 || bac<=0) {
+    document.getElementById('conc-mgml').textContent='--'; document.getElementById('conc-mcgu').textContent='--';
+    main.textContent='--'; mainL.textContent='set vial mg and BAC water first'; sub2.textContent='';
+    document.getElementById('syr-graphic').innerHTML=drawSyringe(0,cap); lastCalc={doseMg:0,units:0}; updateVialStatus(); return;
+  }
+  var mgPerMl = mg/bac, mcgPerUnit = mgPerMl*10;
+  document.getElementById('conc-mgml').textContent = (Math.round(mgPerMl*100)/100);
+  document.getElementById('conc-mcgu').textContent = (Math.round(mcgPerUnit*10)/10);
+  var units=0, doseMcg=0;
+  if (cc.mode==='u2d') {
+    units = parseFloat(document.getElementById('calc-units').value)||0;
+    doseMcg = units*mcgPerUnit;
+    main.textContent = units? (Math.round(doseMcg)+' mcg') : '--';
+    mainL.textContent = units? ('= '+(Math.round(doseMcg/10)/100)+' mg at '+units+' units') : 'enter units drawn';
+  } else {
+    var dv = parseFloat(document.getElementById('calc-dose').value)||0;
+    doseMcg = cc.doseUnit==='mg'? dv*1000 : dv;
+    units = mcgPerUnit>0? doseMcg/mcgPerUnit : 0;
+    main.textContent = units? (Math.round(units*10)/10+' units') : '--';
+    mainL.textContent = units? ('draw to '+(Math.round(units*10)/10)+' on a '+cap+'u syringe') : 'enter your target dose';
+  }
+  var doseMg = doseMcg/1000;
+  lastCalc = { doseMg: doseMg, units: units };
+  if (units>0 && mg>0) { var dosesPer = Math.floor((mg*1000)/doseMcg); sub2.textContent = dosesPer>0? (dosesPer+' doses per '+mg+' mg vial') : ''; }
+  else sub2.textContent='';
+  if (units>cap) warn.innerHTML += '<div class="calc-warn r">That is '+(Math.round(units*10)/10)+' units, more than your '+cap+'u syringe holds. Use a bigger syringe or split the dose.</div>';
+  else if (units>0 && units<2) warn.innerHTML += '<div class="calc-warn y">Only '+(Math.round(units*10)/10)+' units. That is hard to measure accurately. Consider more BAC water so the dose lands at a readable mark.</div>';
+  document.getElementById('syr-graphic').innerHTML = drawSyringe(units, cap);
+  document.getElementById('syr-cap').textContent = units>0? ('Pull the plunger to about '+(Math.round(units*10)/10)+' units') : 'Fill line shows where to pull the plunger';
+  updateVialStatus();
+}
+
+function drawSyringe(units, cap) {
+  var W=300, H=70, bx=14, bw=238, by=22, bh=26, nx=bx+bw;
+  var frac = cap>0? Math.min(1, Math.max(0, units/cap)) : 0;
+  var fillW = bw*frac;
+  var ticks='';
+  var step = cap<=30?5:10, n=Math.round(cap/step);
+  for (var i=0;i<=n;i++){ var x=bx+(bw*(i/n)); ticks+='<line x1="'+x+'" y1="'+by+'" x2="'+x+'" y2="'+(by-6)+'" stroke="#9aa" stroke-width="1"/>'; if(i%2===0) ticks+='<text x="'+x+'" y="'+(by-9)+'" font-size="8" fill="#889" text-anchor="middle">'+(i*step)+'</text>'; }
+  var markX = bx+fillW;
+  var mark = units>0? '<line x1="'+markX+'" y1="'+(by-3)+'" x2="'+markX+'" y2="'+(by+bh+3)+'" stroke="var(--a)" stroke-width="2.5"/><text x="'+markX+'" y="'+(by+bh+16)+'" font-size="10" font-weight="700" fill="var(--a-dark)" text-anchor="middle">'+(Math.round(units*10)/10)+'u</text>' : '';
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:300px;display:block;margin:0 auto">'
+    + '<rect x="'+bx+'" y="'+by+'" width="'+bw+'" height="'+bh+'" rx="4" fill="#fff" stroke="#ccc" stroke-width="1.5"/>'
+    + '<rect x="'+bx+'" y="'+by+'" width="'+fillW+'" height="'+bh+'" rx="4" fill="var(--g-lite)"/>'
+    + ticks
+    + '<rect x="'+(bx-10)+'" y="'+(by+3)+'" width="10" height="'+(bh-6)+'" rx="2" fill="#bbb"/>'
+    + '<polygon points="'+nx+','+(by+bh/2-4)+' '+(nx+26)+','+(by+bh/2)+' '+nx+','+(by+bh/2+4)+'" fill="#bbb"/>'
+    + '<line x1="'+(nx+26)+'" y1="'+(by+bh/2)+'" x2="'+(nx+40)+'" y2="'+(by+bh/2)+'" stroke="#bbb" stroke-width="2"/>'
+    + mark + '</svg>';
+}
+
+function updateVialStatus() {
+  var c = curCalc().compound, v = vials[c];
+  if (!v) { document.getElementById('vial-days').textContent='--'; document.getElementById('vial-remain').textContent='--'; document.getElementById('vial-doses').textContent='--'; return; }
+  var remain = Math.max(0, (v.mg||0) - (v.used||0));
+  document.getElementById('vial-days').textContent = daysBetween(v.date, TODAY);
+  document.getElementById('vial-remain').textContent = Math.round(remain*100)/100;
+  var dm = lastCalc.doseMg||0;
+  document.getElementById('vial-doses').textContent = dm>0? Math.floor(remain/dm) : '--';
+}
+
+function saveVial() {
+  var cc=curCalc(), mg=parseFloat(cc.vialMg)||0, bac=parseFloat(cc.bac)||0, c=cc.compound;
+  if (mg<=0||bac<=0) { alert('Set the vial mg and BAC water first.'); return; }
+  if (vials[c] && !confirm('Replace the saved '+c+' vial? This resets days-since and mg-remaining for a fresh vial.')) return;
+  vials[c] = { mg:mg, bac:bac, date:TODAY, used:0 }; ss('vials', vials);
+  updateVialStatus();
+  alert(c+' vial saved: '+mg+' mg in '+bac+' mL, mixed today.');
+}
+function logCalcDose() {
+  var cc=curCalc();
+  if (!lastCalc.units || lastCalc.units<=0) { alert('Work out a dose first (enter units or a target dose).'); return; }
+  var doseMcg = Math.round(lastCalc.doseMg*1000);
+  var entry = { id:uid(), date:TODAY, time:nowHM(), compound:cc.compound, dose:doseMcg+' mcg', units:Math.round(lastCalc.units*10)/10, site:'', notes:'from calculator' };
+  pepLog.unshift(entry); pepLog=pepLog.slice(0,300); ss('pepLog', pepLog);
+  if (vials[cc.compound]) { vials[cc.compound].used = (vials[cc.compound].used||0) + lastCalc.doseMg; ss('vials', vials); updateVialStatus(); }
+  renderPepLog();
+  alert('Logged '+doseMcg+' mcg of '+cc.compound+' ('+entry.units+' units).');
+}
+
+function addPepLog() {
+  var cc=curCalc();
+  var date=document.getElementById('pl-date').value||TODAY;
+  var entry={ id:uid(), date:date, time:document.getElementById('pl-time').value||'', compound:cc.compound,
+    dose:document.getElementById('pl-dose').value||'', units:document.getElementById('pl-units').value||'',
+    site:document.getElementById('pl-site').value||'', notes:document.getElementById('pl-notes').value||'' };
+  if (!entry.dose && !entry.units) { alert('Enter at least a dose or units.'); return; }
+  pepLog.unshift(entry); pepLog=pepLog.slice(0,300); ss('pepLog', pepLog);
+  ['pl-dose','pl-units','pl-site','pl-notes'].forEach(function(id){ document.getElementById(id).value=''; });
+  renderPepLog();
+}
+function removePepLog(id) { pepLog=pepLog.filter(function(e){return e.id!==id;}); ss('pepLog',pepLog); renderPepLog(); }
+function renderPepLog() {
+  var box=document.getElementById('pep-log-list');
+  if (!pepLog.length) { box.innerHTML='<div class="entry-empty">No doses logged yet.</div>'; return; }
+  box.innerHTML = pepLog.map(function(e){
+    var sub=[]; if(e.units) sub.push(e.units+'u'); if(e.site) sub.push(e.site); if(e.notes) sub.push(e.notes);
+    return '<div class="entry"><div class="entry-top"><div><div class="entry-title">'+e.compound+(e.dose?' &middot; '+e.dose:'')+'</div><div class="entry-sub">'+sub.join(' &middot; ')+'</div></div><div class="entry-date">'+fmtMD(e.date)+(e.time?'<br>'+e.time:'')+'<br><span class="entry-del" onclick="removePepLog(\''+e.id+'\')">remove</span></div></div></div>';
+  }).join('');
+}
+
+/* ---------- KNEE REHAB ---------- */
+var KNEE_EX = [
+  {n:'Quad set (isometric)', prog:'Easy', cue:'Tighten the thigh, press the back of the knee down, hold 5s.'},
+  {n:'Straight-leg raise', prog:'Easy', cue:'Lock the knee, lift the whole leg. No arching the back.'},
+  {n:'Heel slides (ROM)', prog:'Easy', cue:'Slide the heel toward you as far as comfortable. Builds bend.'},
+  {n:'Glute bridge', prog:'Easy', cue:'Drive heels, squeeze glutes. Takes load off the knee.'},
+  {n:'Clamshell (band)', prog:'Easy', cue:'Band above knees, open the top knee, keep hips stacked.'},
+  {n:'Standing calf raise', prog:'Easy', cue:'Full range, slow down. Calf supports the knee.'},
+  {n:'Terminal knee extension (band)', prog:'Easy', cue:'Band behind knee, straighten fully. The key ACL move.'},
+  {n:'Wall sit (isometric hold)', prog:'Med', cue:'Slide down only to a pain-free angle. Hold and breathe.'},
+  {n:'Spanish squat (band)', prog:'Med', cue:'Band behind knees, sit back, shins stay vertical. Quad with less joint stress.'},
+  {n:'Step-up (low box)', prog:'Med', cue:'Drive through the top foot. Start low, control it.'},
+  {n:'Single-leg balance', prog:'Med', cue:'Hold something lightly. Builds the stability that prevents re-injury.'},
+  {n:'Step-down (eccentric, slow)', prog:'Hard', cue:'3-second lower off a low step. Real knee control.'},
+  {n:'Single-leg balance on pad', prog:'Hard', cue:'Soft surface, eyes forward. Progression of balance.'},
+  {n:'Nordic hamstring negative', prog:'Hard', cue:'Lower slowly, catch with hands. Protects the ACL. Advanced.'}
+];
+function buildKneeSelect() {
+  var s=document.getElementById('kn-ex'); s.innerHTML='';
+  KNEE_EX.forEach(function(e){ var o=document.createElement('option'); o.value=e.n; o.textContent=e.n; s.appendChild(o); });
+}
+function buildKneeMenu() {
+  var box=document.getElementById('knee-menu'); var groups=['Easy','Med','Hard']; var html='';
+  groups.forEach(function(g){ html+='<div class="g-lbl">'+g+(g==='Easy'?' - start here':g==='Hard'?' - only when pain stays low':'')+'</div>';
+    KNEE_EX.filter(function(e){return e.prog===g;}).forEach(function(e){ html+='<div style="padding:8px 0;border-bottom:1px solid var(--faint)"><div style="font-size:13px;font-weight:600">'+e.n+'</div><div style="font-size:12px;color:var(--muted);margin-top:2px;line-height:1.4">'+e.cue+'</div></div>'; });
+  });
+  box.innerHTML=html;
+}
+function addKneeLog() {
+  var entry={ id:uid(), date:document.getElementById('kn-date').value||TODAY, exercise:document.getElementById('kn-ex').value,
+    sets:document.getElementById('kn-sets').value||'', reps:document.getElementById('kn-reps').value||'',
+    pb:parseInt(document.getElementById('kn-pb').value), pa:parseInt(document.getElementById('kn-pa').value),
+    notes:document.getElementById('kn-notes').value||'' };
+  kneeLog.unshift(entry); kneeLog=kneeLog.slice(0,400); ss('kneeLog',kneeLog);
+  ['kn-sets','kn-reps','kn-notes'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('kn-pb').value=0; document.getElementById('kn-pa').value=0;
+  document.getElementById('kn-pb-val').textContent='0'; document.getElementById('kn-pa-val').textContent='0';
+  document.getElementById('kn-pb-val').style.color='var(--ok)'; document.getElementById('kn-pa-val').style.color='var(--ok)';
+  renderKneeLog(); renderKneeTrend(); renderDash();
+}
+function removeKneeLog(id) { kneeLog=kneeLog.filter(function(e){return e.id!==id;}); ss('kneeLog',kneeLog); renderKneeLog(); renderKneeTrend(); }
+function renderKneeLog() {
+  var box=document.getElementById('knee-log-list');
+  if (!kneeLog.length) { box.innerHTML='<div class="entry-empty">No rehab sets logged yet.</div>'; return; }
+  box.innerHTML = kneeLog.slice(0,40).map(function(e){
+    var sr=[]; if(e.sets) sr.push(e.sets+' sets'); if(e.reps) sr.push(e.reps+' reps');
+    var pain='pain '+e.pb+' to '+e.pa; var rise=(e.pa-e.pb)>=2;
+    return '<div class="entry"><div class="entry-top"><div><div class="entry-title">'+e.exercise+'</div><div class="entry-sub">'+sr.join(' &middot; ')+(sr.length?' &middot; ':'')+'<span style="color:'+(rise?'var(--red)':'var(--muted)')+';font-weight:'+(rise?'700':'400')+'">'+pain+'</span>'+(e.notes?' &middot; '+e.notes:'')+'</div></div><div class="entry-date">'+fmtMD(e.date)+'<br><span class="entry-del" onclick="removeKneeLog(\''+e.id+'\')">remove</span></div></div></div>';
+  }).join('');
+}
+function renderKneeTrend() {
+  var box=document.getElementById('knee-trend'), empty=document.getElementById('knee-trend-empty');
+  var data=kneeLog.slice(0,14).reverse();
+  if (!data.length) { box.style.display='none'; empty.style.display='block'; return; }
+  box.style.display='flex'; empty.style.display='none';
+  box.innerHTML = data.map(function(e){ var h=Math.max(4,(e.pa/10)*72); return '<div class="trend-col"><div class="trend-bar" style="height:'+h+'px;background:'+painColor(e.pa)+'"></div><div class="trend-lbl">'+e.pa+'</div></div>'; }).join('');
+}
+
+/* ---------- MEDITATION ---------- */
+var medAmpm='AM', medDid=true;
+function setMedAmpm(v){ medAmpm=v; document.getElementById('md-am').classList.toggle('on',v==='AM'); document.getElementById('md-pm').classList.toggle('on',v==='PM'); }
+function setMedDid(v){ medDid=v; document.getElementById('md-did-y').classList.toggle('on',v); document.getElementById('md-did-n').classList.toggle('on',!v); }
+function fmtClock(s){ var m=Math.floor(s/60), ss2=s%60; return m+':'+(''+ss2).padStart(2,'0'); }
+function startMed(min){
+  if (medTimer) clearInterval(medTimer);
+  medTotal=min*60; medRemain=medTotal; medPaused=false;
+  document.getElementById('med-clock').textContent=fmtClock(medRemain);
+  document.getElementById('med-starts').style.display='none';
+  document.getElementById('med-ctrl').style.display='flex';
+  document.getElementById('med-pause').textContent='Pause';
+  medTimer=setInterval(tickMed,1000);
+}
+function tickMed(){ if(medPaused) return; medRemain--; if(medRemain<=0){ clearInterval(medTimer); medTimer=null; document.getElementById('med-clock').textContent='Done'; finishMed(Math.round(medTotal/60)); return; } document.getElementById('med-clock').textContent=fmtClock(medRemain); }
+function pauseMed(){ medPaused=!medPaused; document.getElementById('med-pause').textContent=medPaused?'Resume':'Pause'; }
+function stopMed(){ if(medTimer) clearInterval(medTimer); medTimer=null; var done=Math.round((medTotal-medRemain)/60); document.getElementById('med-ctrl').style.display='none'; document.getElementById('med-starts').style.display='flex'; document.getElementById('med-clock').textContent='5:00'; if(done>=1 && confirm('Log the '+done+' minute(s) you did?')) finishMed(done); }
+function finishMed(min){
+  var ap = (new Date()).getHours()<12?'AM':'PM';
+  medLog.unshift({ id:uid(), date:TODAY, ampm:ap, dur:min, did:true, notes:'timer' }); medLog=medLog.slice(0,400); ss('medLog',medLog);
+  document.getElementById('med-ctrl').style.display='none'; document.getElementById('med-starts').style.display='flex'; document.getElementById('med-clock').textContent='5:00';
+  renderMedAll();
+  setTimeout(function(){ alert('Nice. '+min+' minute session logged.'); },100);
+}
+function addMedLog() {
+  var entry={ id:uid(), date:document.getElementById('md-date').value||TODAY, ampm:medAmpm, dur:document.getElementById('md-dur').value||'', did:medDid, notes:document.getElementById('md-notes').value||'' };
+  if (!entry.dur) { alert('Enter the minutes.'); return; }
+  medLog.unshift(entry); medLog=medLog.slice(0,400); ss('medLog',medLog);
+  document.getElementById('md-dur').value=''; document.getElementById('md-notes').value='';
+  renderMedAll();
+}
+function removeMedLog(id){ medLog=medLog.filter(function(e){return e.id!==id;}); ss('medLog',medLog); renderMedAll(); }
+function medStreak() {
+  var days={}; medLog.forEach(function(e){ if(e.did) days[e.date]=true; });
+  var streak=0, d=new Date(TODAY+'T12:00:00');
+  if (!days[TODAY]) d.setDate(d.getDate()-1);
+  for(;;){ var key=d.toISOString().slice(0,10); if(days[key]){ streak++; d.setDate(d.getDate()-1); } else break; }
+  return streak;
+}
+function renderMedAll() {
+  var s=medStreak();
+  document.getElementById('med-streak').textContent=s;
+  document.getElementById('med-streak-sub').textContent = s>0? (s===1?'One day down. Keep it going.':s+' days in a row. Keep it going.') : 'Meditate today to start one.';
+  var wk=document.getElementById('med-week'); wk.innerHTML='';
+  var days={}; medLog.forEach(function(e){ if(e.did) days[e.date]=true; });
+  for (var i=6;i>=0;i--){ var d=new Date(TODAY+'T12:00:00'); d.setDate(d.getDate()-i); var key=d.toISOString().slice(0,10); var on=!!days[key];
+    var nm=d.toLocaleDateString('en-US',{weekday:'narrow'});
+    wk.innerHTML += '<div class="wd-day"><div class="wd-dot'+(on?' on':'')+'">'+(on?CHECK_SVG:'')+'</div><div class="wd-name">'+nm+'</div></div>';
+  }
+  var box=document.getElementById('med-log-list');
+  if (!medLog.length) { box.innerHTML='<div class="entry-empty">No sessions logged yet.</div>'; return; }
+  box.innerHTML = medLog.slice(0,40).map(function(e){
+    return '<div class="entry"><div class="entry-top"><div><div class="entry-title">'+(e.dur||'?')+' min &middot; '+(e.ampm||'')+(e.did?'':' &middot; skipped')+'</div><div class="entry-sub">'+(e.notes||'')+'</div></div><div class="entry-date">'+fmtMD(e.date)+'<br><span class="entry-del" onclick="removeMedLog(\''+e.id+'\')">remove</span></div></div></div>';
+  }).join('');
+  renderMedReminder(); renderDash();
+}
+
+/* ---------- REBUILD PLAN ---------- */
+var RB_MOBILITY = [
+  {n:'Easy bike', t:'5 min', cue:'Just spin, get blood to the knee.'},
+  {n:'Leg swings', t:'10 / leg', cue:'Front to back, then side to side. Loosen the hip.'},
+  {n:'Bodyweight hip hinge', t:'10 reps', cue:'Grease the hinge pattern before you load it.'},
+  {n:'Banded TKE', t:'12 / leg', cue:'Wake up the quad and the knee lockout.'},
+  {n:'Ankle circles + calf rock', t:'10 / side', cue:'Ankles feed the knee. Do not skip.'}
+];
+var RB_FLEX = [
+  {n:'Quad stretch', t:'30s / side', cue:'Rebuild the front-of-thigh length you lost.'},
+  {n:'Hamstring stretch', t:'30s / side', cue:'Gentle, no bouncing.'},
+  {n:'Couch / hip flexor stretch', t:'30s / side', cue:'Two years of sitting shortened these.'},
+  {n:'Calf stretch', t:'30s / side', cue:'Straight knee then bent knee.'},
+  {n:'Figure-4 glute stretch', t:'30s / side', cue:'Opens the hip that protects the knee.'}
+];
+var RB_PHASES = [
+  {n:'P1', t:'Reactivate and base', w:'Weeks 1 to 4', goal:'Relearn the patterns, build a base, zero pain spikes. Light to moderate, leave 3 to 4 reps in the tank.',
+   cardio:'10 to 12 min easy bike or incline walk. Add 2 min each week. You should be able to talk the whole time.',
+   A:[{name:'Goblet squat to box',target:'3 x 10',eq:'free',cue:'Sit back to the box, stand up. Knees track over toes.'},
+      {name:'DB bench or chest press',target:'3 x 10',eq:'free',cue:'Control down, press up, shoulders back.'},
+      {name:'Seated cable row',target:'3 x 12',eq:'cable',cue:'Pull to the stomach, squeeze the blades.'},
+      {name:'DB Romanian deadlift (light)',target:'3 x 10',eq:'free',cue:'Hinge, soft knees, feel the hamstring.'},
+      {name:'Banded lateral walk',target:'3 x 12 / side',eq:'band',cue:'Band at the knees, stay low, keep tension.'},
+      {name:'Plank',target:'3 x 20-30s',eq:'body',cue:'Straight line, brace the core.'}],
+   B:[{name:'Leg press (machine)',target:'3 x 12',eq:'machine',cue:'Heel drive, controlled depth, no lockout slam.'},
+      {name:'Lat pulldown',target:'3 x 12',eq:'cable',cue:'Pull to the chest, lead with the elbows.'},
+      {name:'Seated DB shoulder press',target:'3 x 10',eq:'free',cue:'Press smooth, do not arch the back.'},
+      {name:'Hip thrust (machine or DB)',target:'3 x 12',eq:'free',cue:'Drive the hips, squeeze glutes at the top.'},
+      {name:'Hamstring curl',target:'3 x 12',eq:'machine',cue:'Slow on the way back, no swinging.'},
+      {name:'Pallof press (band or cable)',target:'3 x 10 / side',eq:'band',cue:'Resist the twist, press straight out.'}]},
+  {n:'P2', t:'Build strength and engine', w:'Weeks 5 to 8', goal:'Add load and a little more range. 8 to 12 reps, effort 7 to 8. Start building the engine back.',
+   cardio:'15 to 25 min. Add short intervals: 1 min a little harder, 2 min easy, repeat. Bike or rower.',
+   A:[{name:'DB goblet squat',target:'3 x 8-10',eq:'free',cue:'A touch deeper than P1 if pain-free.'},
+      {name:'DB bench press',target:'3 x 8-10',eq:'free',cue:'Full range, controlled.'},
+      {name:'1-arm DB row',target:'3 x 10 / side',eq:'free',cue:'One side at a time to even out.'},
+      {name:'DB Romanian deadlift',target:'3 x 10',eq:'free',cue:'Load it a bit more, keep the back flat.'},
+      {name:'Step-up to low box',target:'3 x 8 / leg',eq:'free',cue:'Drive the top foot, lower slow.'},
+      {name:'Banded pull-apart',target:'3 x 15',eq:'band',cue:'Shoulder health and posture.'},
+      {name:'Side plank',target:'3 x 20s / side',eq:'body',cue:'Stack the hips, straight line.'}],
+   B:[{name:'Leg press',target:'3 x 10',eq:'machine',cue:'More load, same control.'},
+      {name:'DB incline press',target:'3 x 10',eq:'free',cue:'Upper chest, control down.'},
+      {name:'Lat pulldown',target:'3 x 10',eq:'cable',cue:'Full range.'},
+      {name:'Hip thrust (barbell or DB)',target:'3 x 10',eq:'free',cue:'Heavy hip drive, full squeeze.'},
+      {name:'Spanish squat (band)',target:'3 x 12',eq:'band',cue:'Shins vertical, quad focus, knee-friendly.'},
+      {name:'Hamstring curl',target:'3 x 10',eq:'machine',cue:'Keep loading the hamstring.'},
+      {name:'Dead bug',target:'3 x 8 / side',eq:'body',cue:'Low back flat, slow and controlled.'}]},
+  {n:'P3', t:'Integrate and return to sport', w:'Weeks 9 to 12', goal:'Strength plus athletic prep. 6 to 10 reps, effort 8. Bands and control for change-of-direction. No cutting or jumping until PT clears it.',
+   cardio:'25 to 35 min mixed. Intervals plus low-impact movement prep: easy skips, lateral shuffles, agility ladder footwork. Keep it below pain.',
+   A:[{name:'DB goblet or front squat',target:'4 x 6-8',eq:'free',cue:'Heaviest so far, still controlled.'},
+      {name:'DB bench press',target:'4 x 6-8',eq:'free',cue:'Strength range.'},
+      {name:'Barbell or DB row',target:'3 x 8',eq:'free',cue:'Hinge, pull, squeeze.'},
+      {name:'Single-leg RDL (DB)',target:'3 x 8 / leg',eq:'free',cue:'Balance plus hamstring. Control the wobble.'},
+      {name:'Banded monster + lateral walk',target:'3 x 20s',eq:'band',cue:'Change-of-direction prep for the knee.'},
+      {name:'Pallof + anti-rotation',target:'3 x 10 / side',eq:'band',cue:'Core that transfers to sport.'}],
+   B:[{name:'Bulgarian split squat (DB)',target:'3 x 8 / leg',eq:'free',cue:'Back foot up, drop straight, controlled.'},
+      {name:'Overhead press (DB or barbell)',target:'4 x 6-8',eq:'free',cue:'Brace and press.'},
+      {name:'Pull-ups or lat pulldown',target:'3 x 8',eq:'body',cue:'Full range.'},
+      {name:'Hip thrust (heavy)',target:'3 x 8',eq:'free',cue:'Power for sprinting later.'},
+      {name:'Eccentric step-down (slow)',target:'3 x 8 / leg',eq:'body',cue:'3-count lower. Real knee control.'},
+      {name:'Band resisted lateral steps',target:'3 x 20s',eq:'band',cue:'Light footwork, rehearse cutting slow.'},
+      {name:'RKC plank',target:'3 x 20-30s',eq:'body',cue:'Max tension the whole hold.'}]}
+];
+var RB_CHECKS = [
+  {id:'mob',t:'Mobility warm-up'},
+  {id:'str',t:'Strength session'},
+  {id:'car',t:'Cardio'},
+  {id:'flx',t:'Flexibility cooldown'},
+  {id:'kne',t:'Knee rehab (if a rehab day)'}
+];
+
+function rbSessionsDone() { var dates={}; for(var k in rbLog){ (rbLog[k]||[]).forEach(function(e){ dates[e.date]=true; }); } rbCardio.forEach(function(e){ dates[e.date]=true; }); return Object.keys(dates).length; }
+function rbEffectivePhase() { var s=rbSessionsDone(); var auto=s>=20?3:s>=8?2:1; return Math.max(auto, profile.rbUnlocked||1); }
+
+function rbRefreshUnlock() {
+  if (rbEffectivePhase() !== rbRenderedEff) {
+    var keep = rbOpenPhase; buildRebuild();
+    if (keep >= 0) { rbOpenPhase = -1; toggleRbPhase(keep); }
+  }
+}
+function buildRebuild() {
+  var area=document.getElementById('rb-phases'); area.innerHTML='';
+  var eff=rbEffectivePhase(); rbRenderedEff=eff;
+  RB_PHASES.forEach(function(ph, idx){
+    var phaseNo=idx+1, locked=phaseNo>eff;
+    var wrap=document.createElement('div'); wrap.style.borderBottom='1px solid var(--faint)'; wrap.style.marginBottom='4px'; wrap.style.paddingBottom='4px';
+    wrap.innerHTML='<div class="phase-hdr'+(locked?' phase-locked':'')+'" onclick="toggleRbPhase('+idx+')"><div class="phase-num">'+ph.n+'</div><div><div class="phase-title">'+ph.t+'</div><div class="phase-weeks">'+ph.w+'</div></div>'+(locked?'<span class="lock-pill">Locked</span>':'<span class="phase-chev" id="rpc-'+idx+'">&#9656;</span>')+'</div><div class="phase-body" id="rpb-'+idx+'"></div>';
+    area.appendChild(wrap);
+  });
+}
+function toggleRbPhase(idx) {
+  var eff=rbEffectivePhase(), phaseNo=idx+1;
+  if (phaseNo>eff) { if(confirm('Phase '+phaseNo+' normally unlocks after more sessions. Unlock it now anyway?')){ profile.rbUnlocked=phaseNo; ss('profile',profile); buildRebuild(); setTimeout(function(){toggleRbPhase(idx);},50); } return; }
+  rbOpenPhase = rbOpenPhase===idx?-1:idx;
+  for (var i=0;i<RB_PHASES.length;i++){ var b=document.getElementById('rpb-'+i); var c=document.getElementById('rpc-'+i); var open=i===rbOpenPhase; if(b){ b.classList.toggle('open',open); if(open&&!b.dataset.built){ b.innerHTML=rbPhaseBody(i); b.dataset.built='1'; bindRbPhase(i); } } if(c)c.classList.toggle('open',open); }
+}
+function rbPhaseBody(idx) {
+  var ph=RB_PHASES[idx];
+  var html='<div class="phase-goal">'+ph.goal+'</div>';
+  html+='<div class="sess-toggle"><button class="on" id="rbsa-'+idx+'" onclick="setRbSess('+idx+',\'A\')">Session A</button><button id="rbsb-'+idx+'" onclick="setRbSess('+idx+',\'B\')">Session B</button></div>';
+  html+='<span class="block-lbl">1. Mobility</span>';
+  html+=RB_MOBILITY.map(function(m){ return '<div class="light g"><div class="pip"></div><b>'+m.n+'</b> ('+m.t+'): '+m.cue+'</div>'; }).join('');
+  html+='<span class="block-lbl">2. Strength</span>';
+  html+='<div id="rbstr-'+idx+'">'+ph.A.map(function(ex,i){ return rbExHTML(idx,'A',i,ex); }).join('')+'</div>';
+  html+='<span class="block-lbl">3. Cardio</span>';
+  html+='<div class="light g"><div class="pip"></div>'+ph.cardio+'</div>';
+  html+='<div class="food-add" style="margin-top:8px"><div class="macro-inputs" style="grid-template-columns:1fr 1fr auto"><div><div class="field-lbl">Minutes</div><input type="number" inputmode="numeric" id="rbcar-min-'+idx+'" placeholder="min"></div><div><div class="field-lbl">Type</div><input type="text" id="rbcar-type-'+idx+'" placeholder="bike, walk..."></div><button class="log-btn" onclick="logCardio('+idx+')">Log</button></div></div>';
+  html+='<span class="block-lbl">4. Flexibility</span>';
+  html+=RB_FLEX.map(function(m){ return '<div class="light g"><div class="pip"></div><b>'+m.n+'</b> ('+m.t+'): '+m.cue+'</div>'; }).join('');
+  return html;
+}
+function setRbSess(idx, s) {
+  document.getElementById('rbsa-'+idx).classList.toggle('on',s==='A');
+  document.getElementById('rbsb-'+idx).classList.toggle('on',s==='B');
+  var ph=RB_PHASES[idx]; var list=s==='A'?ph.A:ph.B;
+  document.getElementById('rbstr-'+idx).innerHTML = list.map(function(ex,i){ return rbExHTML(idx,s,i,ex); }).join('');
+  bindRbStrength(idx,s);
+}
+function rbKey(idx,s,i){ return 'rb'+idx+s+i; }
+function rbKneeFlagged(key){ return !!(profile.rbKneeFlags && profile.rbKneeFlags[key]); }
+function rbExHTML(idx,s,i,ex) {
+  var key=rbKey(idx,s,i);
+  var flagged=rbKneeFlagged(key);
+  var note = flagged? '<div class="kflag-note" id="rbflagnote-'+key+'">Knee limit: controlled range, stop before any pain</div>' : '<span id="rbflagnote-'+key+'"></span>';
+  return '<div class="ex"><div class="ex-head" data-rbx="'+key+'"><div class="ex-main"><div class="ex-name">'+ex.name+'</div><div class="ex-meta"><span class="eq-pill eq-'+ex.eq+'">'+EQ_LABEL[ex.eq]+'</span><span class="ex-target">'+ex.target+'</span></div><div class="ex-cue">'+ex.cue+'</div>'+note+'<div class="ex-last" id="rblast-'+key+'" style="display:none"></div></div><span class="ex-chev" id="rbchev-'+key+'">&#9656;</span></div>'
+    +'<div class="ex-log" id="rblog-'+key+'"><div class="ex-log-grid" style="grid-template-columns:1fr 1fr 1fr"><div><div class="field-lbl">Weight</div><input type="number" inputmode="decimal" id="rbw-'+key+'" placeholder="lb"></div><div><div class="field-lbl">Sets</div><input type="number" inputmode="numeric" id="rbs-'+key+'" placeholder="3"></div><div><div class="field-lbl">Reps</div><input type="text" id="rbr-'+key+'" placeholder="10"></div></div>'
+    +'<div class="ex-log-grid" style="grid-template-columns:1fr 2fr auto;margin-top:8px"><div><div class="field-lbl">Effort 1-10</div><input type="number" inputmode="numeric" id="rbe-'+key+'" placeholder="7"></div><div><div class="field-lbl">Notes</div><input type="text" id="rbn-'+key+'" placeholder="optional"></div><button class="log-btn" onclick="logRbExercise(\''+key+'\')">Log</button></div>'
+    +'<button class="kflag-btn'+(flagged?' on':'')+'" id="rbflag-'+key+'" onclick="toggleKneeFlag(\''+key+'\')">'+(flagged?'✓ Knee-limit move':'⚠ Mark as knee-limit move')+'</button>'
+    +'<div class="ex-history" id="rbhist-'+key+'"></div></div></div>';
+}
+function toggleKneeFlag(key) {
+  profile.rbKneeFlags = profile.rbKneeFlags || {};
+  profile.rbKneeFlags[key] = !profile.rbKneeFlags[key];
+  ss('profile', profile);
+  var on = profile.rbKneeFlags[key];
+  var btn = document.getElementById('rbflag-'+key); if(btn){ btn.classList.toggle('on',on); btn.textContent = on?'✓ Knee-limit move':'⚠ Mark as knee-limit move'; }
+  var note = document.getElementById('rbflagnote-'+key);
+  if (note) { if(on){ note.className='kflag-note'; note.textContent='Knee limit: controlled range, stop before any pain'; } else { note.className=''; note.textContent=''; } }
+}
+function bindRbPhase(idx){ bindRbStrength(idx,'A'); }
+function bindRbStrength(idx,s) {
+  document.querySelectorAll('#rbstr-'+idx+' .ex-head').forEach(function(h){ h.onclick=function(){ toggleRbEx(h.dataset.rbx); }; });
+  RB_PHASES[idx][s].forEach(function(_,i){ updateRbLast(rbKey(idx,s,i)); });
+}
+function toggleRbEx(key) {
+  var log=document.getElementById('rblog-'+key), chev=document.getElementById('rbchev-'+key);
+  var open=log.classList.toggle('open'); chev.classList.toggle('open',open);
+  if (open) renderRbExHistory(key);
+}
+function logRbExercise(key) {
+  var w=document.getElementById('rbw-'+key).value, s=document.getElementById('rbs-'+key).value, r=document.getElementById('rbr-'+key).value, e=document.getElementById('rbe-'+key).value, n=document.getElementById('rbn-'+key).value;
+  if (!w&&!s&&!r) return;
+  rbLog[key]=rbLog[key]||[]; rbLog[key].unshift({date:TODAY,weight:w,sets:s,reps:r,effort:e,notes:n}); rbLog[key]=rbLog[key].slice(0,30); ss('rbLog',rbLog);
+  ['rbw-','rbs-','rbr-','rbe-','rbn-'].forEach(function(p){ document.getElementById(p+key).value=''; });
+  renderRbExHistory(key); updateRbLast(key); renderRbWeek(); rbRefreshUnlock();
+}
+function rbLabel(e){ return (e.weight?e.weight+'lb':'')+(e.weight&&(e.sets||e.reps)?' ':'')+(e.sets?e.sets+'x':'')+(e.reps||'')+(e.effort?' @'+e.effort:''); }
+function updateRbLast(key) {
+  var el=document.getElementById('rblast-'+key); if(!el) return;
+  var en=(rbLog[key]||[])[0];
+  if(!en){ el.style.display='none'; el.innerHTML=''; return; }
+  el.style.display='inline-flex'; el.innerHTML='<span class="last-tag">LAST</span> '+rbLabel(en)+' &middot; '+fmtMD(en.date);
+}
+function renderRbExHistory(key) {
+  var box=document.getElementById('rbhist-'+key); var en=rbLog[key]||[];
+  if(!en.length){ box.innerHTML='<div class="ex-hist-empty">No entries yet. Beat your last set.</div>'; return; }
+  box.innerHTML=en.map(function(e,i){ return '<div class="ex-hist-item"><span class="v">'+rbLabel(e)+'</span><span><span class="d">'+fmtMD(e.date)+'</span> <span class="ex-hist-del" data-rbd="'+key+'" data-i="'+i+'">remove</span></span></div>'+(e.notes?'<div style="font-size:11px;color:var(--muted);padding:0 0 4px">'+e.notes+'</div>':''); }).join('');
+  box.querySelectorAll('.ex-hist-del').forEach(function(d){ d.onclick=function(){ rbLog[key].splice(parseInt(d.dataset.i),1); ss('rbLog',rbLog); renderRbExHistory(key); updateRbLast(key); renderRbWeek(); }; });
+}
+function logCardio(idx) {
+  var m=parseFloat(document.getElementById('rbcar-min-'+idx).value)||0, t=document.getElementById('rbcar-type-'+idx).value||'';
+  if (m<=0) { alert('Enter cardio minutes.'); return; }
+  rbCardio.unshift({date:TODAY,minutes:m,type:t}); rbCardio=rbCardio.slice(0,200); ss('rbCardio',rbCardio);
+  document.getElementById('rbcar-min-'+idx).value=''; document.getElementById('rbcar-type-'+idx).value='';
+  renderRbWeek(); rbRefreshUnlock();
+  alert('Logged '+m+' min cardio.');
+}
+function renderRbWeek() {
+  var cut=new Date(TODAY+'T12:00:00'); cut.setDate(cut.getDate()-6); var cutK=cut.toISOString().slice(0,10);
+  var sessDates={}, cardioMin=0;
+  for(var k in rbLog){ (rbLog[k]||[]).forEach(function(e){ if(e.date>=cutK) sessDates[e.date]=true; }); }
+  rbCardio.forEach(function(e){ if(e.date>=cutK){ sessDates[e.date]=true; cardioMin+=e.minutes||0; } });
+  var ws=document.getElementById('rb-wkstats');
+  ws.innerHTML='<div class="wk-stat"><div class="wv">'+Object.keys(sessDates).length+'</div><div class="wl">sessions this week</div></div>'
+    +'<div class="wk-stat"><div class="wv">'+Math.round(cardioMin)+'</div><div class="wl">cardio min</div></div>'
+    +'<div class="wk-stat"><div class="wv">'+rbSessionsDone()+'</div><div class="wl">total sessions</div></div>';
+  var goal=parseFloat(profile.cardioGoal)||0, fill=document.getElementById('rb-goal-fill'), lbl=document.getElementById('rb-goal-label');
+  if (fill&&lbl) {
+    if (goal>0) { var pct=Math.min(100,Math.round((cardioMin/goal)*100)); fill.style.width=pct+'%'; fill.style.background=pct>=100?'var(--ok)':'var(--a)'; lbl.textContent=Math.round(cardioMin)+' of '+goal+' min'+(pct>=100?', goal hit!':''); }
+    else { fill.style.width='0'; lbl.textContent='Set a target to track it'; }
+  }
+  var lifts=[]; for(var key in rbLog){ var arr=rbLog[key]; if(arr&&arr.length&&arr[0].weight){ lifts.push({key:key,last:arr[0],prev:arr[1]}); } }
+  lifts.sort(function(a,b){ return (b.last.date).localeCompare(a.last.date); });
+  var kl=document.getElementById('rb-keylifts');
+  if (!lifts.length) { kl.innerHTML='<div style="font-size:12px;color:var(--muted);margin-top:4px">Log a lift in the program below and your trending lifts show here.</div>'; return; }
+  function nm(key){ var m=key.match(/^rb(\d+)([AB])(\d+)$/); if(!m) return 'Lift'; var ph=RB_PHASES[+m[1]]; return (ph?ph[m[2]][+m[3]].name:'Lift'); }
+  kl.innerHTML='<div class="g-lbl">Recent lifts</div>'+lifts.slice(0,4).map(function(l){
+    var arrow=''; if(l.prev&&l.prev.weight){ var d=(parseFloat(l.last.weight)||0)-(parseFloat(l.prev.weight)||0); arrow=d>0?' <span style="color:var(--ok)">&#9650; '+d+'</span>':d<0?' <span style="color:var(--red)">&#9660; '+Math.abs(d)+'</span>':' <span style="color:var(--muted)">even</span>'; }
+    return '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--faint);font-size:13px"><span>'+nm(l.key)+'</span><span style="font-weight:700">'+rbLabel(l.last)+arrow+'</span></div>';
+  }).join('');
+}
+function renderRbChecklist() {
+  var box=document.getElementById('rb-checklist'); var today=rbChecks[TODAY]||{};
+  box.innerHTML=RB_CHECKS.map(function(c){ var on=!!today[c.id]; return '<div class="check-row" onclick="toggleRbCheck(\''+c.id+'\')"><div class="chk'+(on?' on':'')+'" id="rbchk-'+c.id+'">'+CHECK_SVG+'</div><div><div class="ck-text'+(on?' ck-done':'')+'" id="rbckt-'+c.id+'">'+c.t+'</div></div></div>'; }).join('');
+}
+function toggleRbCheck(id) {
+  rbChecks[TODAY]=rbChecks[TODAY]||{}; rbChecks[TODAY][id]=!rbChecks[TODAY][id]; ss('rbChecks',rbChecks);
+  var on=rbChecks[TODAY][id]; document.getElementById('rbchk-'+id).classList.toggle('on',on); document.getElementById('rbckt-'+id).className='ck-text'+(on?' ck-done':'');
+  renderDash();
+}
+function setCardioGoal(v) { profile.cardioGoal = v; ss('profile', profile); renderRbWeek(); }
+
+/* ---------- TODAY DASHBOARD ---------- */
+function renderDash() {
+  var ds=document.getElementById('dash-streak'); if(!ds) return;
+  ds.textContent = medStreak();
+  var kv=document.getElementById('dash-knee'), kl=document.getElementById('dash-knee-l');
+  var recent = kneeLog.slice(0,2);
+  if (recent.length) { var last=recent[0].pa; kv.textContent=last; kv.style.color='#fff';
+    var arrow=''; if(recent[1]!==undefined){ var d=last-recent[1].pa; arrow=d<0?' ↓':d>0?' ↑':''; }
+    kl.textContent='knee pain'+arrow;
+  } else if (state.knee!==undefined) { kv.textContent=state.knee; kl.textContent='knee pain today'; }
+  else { kv.textContent='--'; kl.textContent='knee pain'; }
+  var next = (rbSessionsDone()%2===0)?'A':'B';
+  document.getElementById('dash-next').textContent = next;
+  var blocks=[{id:'mob',ic:'🤸',l:'Mobility'},{id:'str',ic:'💪',l:'Strength'},{id:'car',ic:'🚴',l:'Cardio'},{id:'flx',ic:'🧎',l:'Stretch'}];
+  var today=rbChecks[TODAY]||{};
+  document.getElementById('dash-blocks').innerHTML = blocks.map(function(b){ var on=!!today[b.id]; return '<div class="dash-blk'+(on?' on':'')+'"><div class="db-ic">'+(on?'✓':b.ic)+'</div><div class="db-l">'+b.l+'</div></div>'; }).join('');
+}
+
+/* ---------- TAPE MEASUREMENTS ---------- */
+function addTape() {
+  var w=document.getElementById('tape-waist').value, h=document.getElementById('tape-hips').value, t=document.getElementById('tape-thigh').value;
+  if (!w&&!h&&!t) { alert('Enter at least one measurement.'); return; }
+  tapeLog.unshift({ date:TODAY, waist:w, hips:h, thigh:t }); tapeLog=tapeLog.slice(0,100); ss('tapeLog', tapeLog);
+  ['tape-waist','tape-hips','tape-thigh'].forEach(function(id){ document.getElementById(id).value=''; });
+  renderTape();
+}
+function tapeChg(cur, prev) {
+  if (prev===undefined || cur==='' || cur==null) return '';
+  var d = (parseFloat(cur)||0) - (parseFloat(prev)||0);
+  if (!prev && prev!==0) return '';
+  var c = d<0?'var(--ok)':d>0?'var(--red)':'var(--muted)';
+  var s = d<0?'▼ '+Math.abs(Math.round(d*10)/10):d>0?'▲ '+Math.round(d*10)/10:'even';
+  return ' <span class="tape-chg" style="color:'+c+'">'+s+'</span>';
+}
+function renderTape() {
+  var box=document.getElementById('tape-trend'); if(!box) return;
+  var pr=document.getElementById('photo-reminder');
+  if (!tapeLog.length) { box.innerHTML='<div class="entry-empty">No measurements yet.</div>'; if(pr) pr.textContent='📸 Snap a progress photo today to start your visual record.'; return; }
+  var last=tapeLog[0], prev=tapeLog[1]||{};
+  var daysSince = daysBetween(last.date, TODAY);
+  if (pr) pr.textContent = daysSince>=14? ('📸 It has been '+daysSince+' days. Time for a new progress photo.') : ('📸 Last measured '+(daysSince===0?'today':daysSince+' days ago') + '. Photo every 2 weeks.');
+  var rows='<div class="g-lbl">Latest ('+fmtMD(last.date)+')</div>';
+  [['Waist','waist'],['Hips','hips'],['Thigh','thigh']].forEach(function(p){
+    if (last[p[1]]) rows+='<div class="tape-trend-row"><span>'+p[0]+'</span><span><b>'+last[p[1]]+'"</b>'+tapeChg(last[p[1]],prev[p[1]])+'</span></div>';
+  });
+  box.innerHTML=rows;
+}
+
+/* ---------- MEDITATION REMINDER ---------- */
+function setMedReminder(v) {
+  profile.medReminder = v; ss('profile', profile); renderMedReminder();
+}
+function renderMedReminder() {
+  var r=profile.medReminder||'';
+  var am=document.getElementById('mr-am'), pm=document.getElementById('mr-pm'), any=document.getElementById('mr-any');
+  if(!am) return;
+  am.classList.toggle('on',r==='AM'); pm.classList.toggle('on',r==='PM'); any.classList.toggle('on',r==='');
+  var note=document.getElementById('med-reminder-note');
+  var days={}; medLog.forEach(function(e){ if(e.did) days[e.date]=true; });
+  var doneToday=!!days[TODAY];
+  if (doneToday) note.textContent='Done today. Nice.';
+  else if (r==='AM') note.textContent='Your morning session is not logged yet.';
+  else if (r==='PM') note.textContent='Your evening session is not logged yet.';
+  else note.textContent='';
+}
+
+/* ---------- BACKUP / RESTORE ---------- */
+function allAppKeys() {
+  var keys = ['profile','tracker','exLog','dayList','pepLog','vials','rbLog','rbCardio','rbChecks','kneeLog','medLog','tapeLog'];
+  (dayList||[]).forEach(function(d){ keys.push('day:'+d); });
+  return keys;
+}
+function exportBackup() {
+  var data={}; allAppKeys().forEach(function(k){ var v=null; try{ v=localStorage.getItem(k); }catch(e){} if(v!==null) data[k]=v; });
+  var payload={ app:'comeback-plan', version:4, exported:new Date().toISOString(), data:data };
+  var blob=new Blob([JSON.stringify(payload)],{type:'application/json'});
+  var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download='comeback-backup-'+TODAY+'.json'; a.click(); URL.revokeObjectURL(url);
+  document.getElementById('backup-status').textContent='Backup saved. Keep it somewhere safe (email it to yourself, save to Files).';
+}
+function importBackup(input) {
+  var file=input.files&&input.files[0]; if(!file) return;
+  if (!confirm('Restore from this backup? It replaces your current data in this browser.')) { input.value=''; return; }
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try {
+      var payload=JSON.parse(e.target.result);
+      var data=payload&&payload.data?payload.data:payload;
+      if (!data || typeof data!=='object') throw new Error('bad file');
+      Object.keys(data).forEach(function(k){ localStorage.setItem(k, data[k]); });
+      document.getElementById('backup-status').textContent='Restored. Reloading...';
+      setTimeout(function(){ location.reload(); }, 600);
+    } catch(err) { alert('That does not look like a Comeback backup file.'); }
+    input.value='';
+  };
+  reader.readAsText(file);
+}
+
+try { init(); }
+catch (e) {
+  if (window.console && console.error) console.error('startup crashed:', e);
+  try { document.getElementById('hdr-date').textContent = 'Ready'; } catch(_) {}
+  try {
+    var sc = document.getElementById('scroll');
+    if (sc && !document.getElementById('init-err')) {
+      var b = document.createElement('div');
+      b.id = 'init-err';
+      b.style.cssText = 'background:#FAE8E4;color:#B84B30;border-radius:12px;padding:12px 14px;margin:0 0 12px;font-size:13px;line-height:1.5;font-weight:600;';
+      b.textContent = 'Startup hit a snag, so some sections may be blank. The tabs still work. Try the Back up button on History to save your data, then reload.';
+      sc.insertBefore(b, sc.firstChild);
+    }
+  } catch(_) {}
+}
+</script>
+</body>
+</html>
